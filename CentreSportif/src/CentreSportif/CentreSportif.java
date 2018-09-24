@@ -1,5 +1,5 @@
 // Travail fait par :
-//   NomEquipier1 - Matricule
+//   Charlet Thomas - 18-146-249
 //   NomEquipier2 - Matricule
 
 package CentreSportif;
