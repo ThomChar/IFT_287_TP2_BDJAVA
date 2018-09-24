@@ -1,0 +1,26 @@
+inscrireParticipant John Smith MotDePasse 01020304
+inscrireParticipant Harry Potter GWeasley 05321485
+inscrireParticipant Ron Weasley HermiG 05325415
+inscrireParticipant Drago Malfois VdMort 05947254
+supprimerParticipant 01020304
+ajouterLigue Quidditch 7
+ajouterLigue Soccer2A 11
+supprimerLigue Soccer2A
+ajouterEquipe Quidditch Griffondor 05321485
+ajouterEquipe Quidditch Serpentard 05947254
+ajouterJoueur Griffondor 05321485
+ajouterJoueur Griffondor 05325415
+ajouterJoueur Griffondor 05947254
+accepterJoueur Griffondor 05321485
+accepterJoueur Griffondor 05325415
+supprimerJoueur Griffondor 05325415
+ajouterJoueur Griffondor 05325415
+accepterJoueur Griffondor 05325415
+refuserJoueur Griffondor 05947254
+ajouterJoueur Serpentard 05947254
+accepterJoueur Serpentard 05947254
+ajouterResultat Griffondor 150 Serpentard 60
+afficherEquipe Griffondor
+afficherLigue Quidditch
+afficherEquipes
+quitter
