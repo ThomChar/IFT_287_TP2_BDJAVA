@@ -9,6 +9,7 @@ public class Participant {
 	private String nom;
 	private String motDePasse;
 	private Equipe equipe;
+	private String statut;
 	
 	//Builders
 	
@@ -19,6 +20,7 @@ public class Participant {
 		this.nom = nom;
 		this.motDePasse = motDePasse;
 		this.equipe = null;
+		this.statut = null;
 	}
 	
 	public Participant(String matricule, String prenom, String nom, String motDePasse, Equipe equipe) {
@@ -28,6 +30,7 @@ public class Participant {
 		this.nom = nom;
 		this.motDePasse = motDePasse;
 		this.equipe = equipe;
+		this.statut = null;
 	}
 	
 	// Getters & Setters
@@ -70,5 +73,13 @@ public class Participant {
 	public String toString() {
 		return "Participant [matricule=" + matricule + ", prenom=" + prenom + ", nom=" + nom + ", motDePasse="
 				+ motDePasse + "]";
+	}
+
+	public String getStatut() {
+		return statut;
+	}
+
+	public void setStatut(String statut) {
+		this.statut = statut;
 	}
 }

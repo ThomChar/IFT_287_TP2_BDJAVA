@@ -10,6 +10,7 @@ public class Equipe {
 	private ArrayList<Participant> listParticipants;
 	private Participant capitaine;
 	private Ligue ligue;
+	private ArrayList<Resultat> listResultats;
 	
 	//Builders
 	
@@ -20,15 +21,9 @@ public class Equipe {
 		this.listParticipants = new ArrayList<Participant>();
 		this.listParticipants.add(capitaine);
 		this.capitaine = capitaine;
+		this.listResultats = new ArrayList<Resultat>();
 	}
 	
-	public Equipe(String nomEquipe, Participant capitaine) {
-		super();
-		this.nomEquipe = nomEquipe;
-		this.listParticipants = new ArrayList<Participant>();
-		this.listParticipants.add(capitaine);
-		this.capitaine = capitaine;
-	}
 	
 	public Equipe(Ligue ligue, String nomEquipe,  Participant capitaine, ArrayList<Participant> listParticipants) {
 		super();
@@ -36,6 +31,7 @@ public class Equipe {
 		this.nomEquipe = nomEquipe;
 		this.listParticipants = listParticipants;
 		this.capitaine = capitaine;
+		this.listResultats = new ArrayList<Resultat>();
 	}
 
 	//Getters & Setters
@@ -70,6 +66,14 @@ public class Equipe {
 
 	public void setLigue(Ligue ligue) {
 		this.ligue = ligue;
+	}
+
+	public ArrayList<Resultat> getListResultat() {
+		return listResultats;
+	}
+
+	public void setListResultat(ArrayList<Resultat> listResultat) {
+		this.listResultats = listResultat;
 	}
 
 }

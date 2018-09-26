@@ -6,31 +6,34 @@ public class Ligue {
 
 	// Attributes
 
-	private String NomLigue;
+	private String nomLigue;
 	private ArrayList<Equipe> listEquipes;
+	private int nbJoueurMaxParEquipe;
 
 	// Builders
 
-	public Ligue(String nomLigue, ArrayList<Equipe> listEquipes) {
+	public Ligue(String nomLigue, ArrayList<Equipe> listEquipes, int nbJoueurMaxParEquipe) {
 		super();
-		NomLigue = nomLigue;
+		this.nomLigue = nomLigue;
 		this.listEquipes = listEquipes;
+		this.setNbJoueurMaxParEquipe(nbJoueurMaxParEquipe);
 	}
 
-	public Ligue(String nomLigue) {
+	public Ligue(String nomLigue, int nbJoueurMaxParEquipe) {
 		super();
-		NomLigue = nomLigue;
+		this.nomLigue = nomLigue;
 		this.listEquipes = new ArrayList<Equipe>();
+		this.setNbJoueurMaxParEquipe(nbJoueurMaxParEquipe);
 	}
 
 	// Getters & Setters
 
 	public String getNomLigue() {
-		return NomLigue;
+		return nomLigue;
 	}
 
 	public void setNomLigue(String nomLigue) {
-		NomLigue = nomLigue;
+		this.nomLigue = nomLigue;
 	}
 
 	public ArrayList<Equipe> getListEquipes() {
@@ -41,22 +44,22 @@ public class Ligue {
 		this.listEquipes = listEquipes;
 	}
 
-	// Methods
-
-	/*public void inscrireParticipant(String matricule, String prenom, String nom, String motDePasse) {
-		
-		
-		Participant participant = new Participant(matricule, prenom, nom, motDePasse);
-		
+	public int getNbJoueurMaxParEquipe() {
+		return nbJoueurMaxParEquipe;
 	}
-	
-	 public void supprimerParticipant(String matricule){
-		 
-	 }*/
+
+	public void setNbJoueurMaxParEquipe(int nbJoueurMaxParEquipe) {
+		this.nbJoueurMaxParEquipe = nbJoueurMaxParEquipe;
+	}
 
 	@Override
 	public String toString() {
-		return "Ligue [NomLigue=" + NomLigue + ", listEquipes=" + listEquipes + "]";
+		return "Ligue [nomLigue=" + nomLigue + ", listEquipes=" + listEquipes + ", nbJoueurMaxParEquipe="
+				+ nbJoueurMaxParEquipe + "]";
 	}
+
+	// Methods
+	
+	
 
 }
