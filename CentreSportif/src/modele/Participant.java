@@ -8,6 +8,7 @@ public class Participant {
 	private String prenom;
 	private String nom;
 	private String motDePasse;
+	private Equipe equipe;
 	
 	//Builders
 	
@@ -17,6 +18,16 @@ public class Participant {
 		this.prenom = prenom;
 		this.nom = nom;
 		this.motDePasse = motDePasse;
+		this.equipe = null;
+	}
+	
+	public Participant(String matricule, String prenom, String nom, String motDePasse, Equipe equipe) {
+		super();
+		this.matricule = matricule;
+		this.prenom = prenom;
+		this.nom = nom;
+		this.motDePasse = motDePasse;
+		this.equipe = equipe;
 	}
 	
 	// Getters & Setters
@@ -45,6 +56,14 @@ public class Participant {
 	}
 	public void setMotDePasse(String motDePasse) {
 		this.motDePasse = motDePasse;
+	}
+	
+	public Equipe getEquipe() {
+		return equipe;
+	}
+
+	public void setEquipe(Equipe equipe) {
+		this.equipe = equipe;
 	}
 	
 	@Override
