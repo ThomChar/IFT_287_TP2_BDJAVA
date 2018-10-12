@@ -169,7 +169,7 @@ public class ComplexeSportif {
 
 	}
 
-	public void ajouterEquipe(String nomLigue, String nomEquipe, Participant capitaine) throws IFT287Exception {
+	public void ajouterEquipe(String nomLigue, String nomEquipe, String matriculeCap) throws IFT287Exception {
 
 		boolean trouve = false;
 
@@ -183,7 +183,7 @@ public class ComplexeSportif {
 		}
 
 		if (trouve == false) {
-			Equipe newEquipe = new Equipe(RechercheLigue(nomLigue), nomEquipe, capitaine);
+			Equipe newEquipe = new Equipe(nomLigue, nomEquipe, matriculeCap);
 			RechercheLigue(nomLigue).getListEquipes().add(newEquipe);
 
 		} else {

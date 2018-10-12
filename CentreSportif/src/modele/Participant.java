@@ -8,6 +8,7 @@ public class Participant {
 	private String prenom;
 	private String nom;
 	private String motDePasse;
+	private String nomEquipe;
 	private Equipe equipe;
 	private String statut;
 	
@@ -20,20 +21,26 @@ public class Participant {
 		this.nom = nom;
 		this.motDePasse = motDePasse;
 		this.equipe = null;
+		this.nomEquipe = null;
 		this.statut = null;
 	}
 	
-	public Participant(String matricule, String prenom, String nom, String motDePasse, Equipe equipe) {
+	public Participant(String matricule, String prenom, String nom, String motDePasse, String nomEquipe ) {
 		super();
 		this.matricule = matricule;
 		this.prenom = prenom;
 		this.nom = nom;
 		this.motDePasse = motDePasse;
-		this.equipe = equipe;
+		this.nomEquipe = nomEquipe;
+		this.equipe = null;
 		this.statut = null;
 	}
 	
 	// Getters & Setters
+
+	public Participant() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public String getMatricule() {
 		return matricule;
@@ -69,12 +76,6 @@ public class Participant {
 		this.equipe = equipe;
 	}
 	
-	@Override
-	public String toString() {
-		return "Participant [matricule=" + matricule + ", prenom=" + prenom + ", nom=" + nom + ", motDePasse="
-				+ motDePasse + "]";
-	}
-
 	public String getStatut() {
 		return statut;
 	}
@@ -82,4 +83,28 @@ public class Participant {
 	public void setStatut(String statut) {
 		this.statut = statut;
 	}
+
+	public String getNomEquipe() {
+		return nomEquipe;
+	}
+
+	public void setNomEquipe(String nomEquipe) {
+		this.nomEquipe = nomEquipe;
+	}
+	
+	@Override
+	public String toString() {
+		return "Participant [matricule=" + matricule + ", prenom=" + prenom + ", nom=" + nom + ", motDePasse="
+				+ motDePasse + "]";
+	}
+
+	public boolean isActive() {
+		boolean testIsActive = true;
+		if(this.getStatut() == null || this.getStatut().equals("SUPPRIME") || this.getStatut().equals("REFUSE")) {
+			testIsActive = false;
+		}
+		return testIsActive;
+	}
+
+	
 }

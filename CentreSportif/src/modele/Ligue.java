@@ -11,6 +11,9 @@ public class Ligue {
 	private int nbJoueurMaxParEquipe;
 
 	// Builders
+	
+	public Ligue() {
+	}
 
 	public Ligue(String nomLigue, ArrayList<Equipe> listEquipes, int nbJoueurMaxParEquipe) {
 		super();
@@ -27,6 +30,7 @@ public class Ligue {
 	}
 
 	// Getters & Setters
+
 
 	public String getNomLigue() {
 		return nomLigue;
@@ -56,6 +60,24 @@ public class Ligue {
 	public String toString() {
 		return "Ligue [nomLigue=" + nomLigue + ", listEquipes=" + listEquipes + ", nbJoueurMaxParEquipe="
 				+ nbJoueurMaxParEquipe + "]";
+	}
+
+	public boolean isActive() {
+		boolean testIsActive = true;
+		if(this.getListEquipes().size() == 0) {
+			testIsActive = false;
+		}
+		return testIsActive;
+	}
+
+	public boolean testNewEquipes(String nomLigue) {
+		boolean testNewEquipe = true;
+		for (Equipe equipe : this.listEquipes) {
+			if(!equipe.getNomLigue().equals(nomLigue)) {
+				testNewEquipe = false;
+			}
+		}
+		return testNewEquipe;
 	}
 
 	// Methods

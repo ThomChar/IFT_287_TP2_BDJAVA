@@ -8,34 +8,47 @@ public class Equipe {
 	
 	private String nomEquipe;
 	private ArrayList<Participant> listParticipants;
+	private String matriculeCap;
 	private Participant capitaine;
+	private String nomLigue;
 	private Ligue ligue;
 	private ArrayList<Resultat> listResultats;
 	
 	//Builders
 	
-	public Equipe(Ligue ligue, String nomEquipe, Participant capitaine) {
+	public Equipe() {
+	}
+	
+	public Equipe(String nomLigue, String nomEquipe, String matriculeCap) {
 		super();
 		this.setLigue(ligue);
 		this.nomEquipe = nomEquipe;
 		this.listParticipants = new ArrayList<Participant>();
-		this.listParticipants.add(capitaine);
-		this.capitaine = capitaine;
+		//this.listParticipants.add(capitaine);
+		this.matriculeCap = matriculeCap;
+		this.capitaine = null;
+		this.nomLigue = nomLigue;
+		this.ligue = null;
 		this.listResultats = new ArrayList<Resultat>();
 	}
 	
 	
-	public Equipe(Ligue ligue, String nomEquipe,  Participant capitaine, ArrayList<Participant> listParticipants) {
+	public Equipe(String nomLigue, String nomEquipe,  String matriculeCap, ArrayList<Participant> listParticipants) {
 		super();
 		this.setLigue(ligue);
 		this.nomEquipe = nomEquipe;
 		this.listParticipants = listParticipants;
-		this.capitaine = capitaine;
+		this.matriculeCap = matriculeCap;
+		this.capitaine = null;
+		this.nomLigue = nomLigue;
+		this.ligue = null;
 		this.listResultats = new ArrayList<Resultat>();
 	}
 
 	//Getters & Setters
 	
+
+
 	public String getNomEquipe() {
 		return nomEquipe;
 	}
@@ -68,12 +81,42 @@ public class Equipe {
 		this.ligue = ligue;
 	}
 
-	public ArrayList<Resultat> getListResultat() {
+	public ArrayList<Resultat> getListResultats() {
 		return listResultats;
 	}
 
-	public void setListResultat(ArrayList<Resultat> listResultat) {
+	public void setListResultats(ArrayList<Resultat> listResultat) {
 		this.listResultats = listResultat;
 	}
+
+
+	public String getMatriculeCap() {
+		return matriculeCap;
+	}
+
+
+	public void setMatriculeCap(String matriculeCap) {
+		this.matriculeCap = matriculeCap;
+	}
+
+
+	public String getNomLigue() {
+		return nomLigue;
+	}
+
+
+	public void setNomLigue(String nomLigue) {
+		this.nomLigue = nomLigue;
+	}
+
+	public boolean isActive() {
+		boolean testIsActive = true;
+		if(this.getListParticipants().size() == 0) {
+			testIsActive = false;
+		}
+		return testIsActive;
+	}
+
+	
 
 }
