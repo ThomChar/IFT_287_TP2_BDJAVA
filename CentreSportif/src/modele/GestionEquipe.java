@@ -67,5 +67,20 @@ public class GestionEquipe {
 			throw e;
 		}
 	}
+	
+	/**
+	 * Lecture des participants d'une équipe
+	 */
+	public ArrayList<Participant> lectureParticipants(String nomEquipe) throws SQLException, IFT287Exception, Exception {
+		// Validation
+		Equipe tupleEquipe = equipe.getEquipe(nomEquipe);
+		if (tupleEquipe == null)
+			throw new IFT287Exception("Equipe inexistant: " + nomEquipe);
+		if (!tupleEquipe.isActive())
+			throw new IFT287Exception("Equipe " + nomEquipe + "a encore des participants actifs");
 
+		ArrayList<Participant> listeParticipant =  equipe.lectureParticipants(nomEquipe);
+		
+		return listeParticipant;
+	}
 }

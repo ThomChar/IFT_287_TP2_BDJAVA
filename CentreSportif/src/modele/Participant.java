@@ -105,6 +105,14 @@ public class Participant {
 		}
 		return testIsActive;
 	}
+	
+	public boolean equipeIsActive() {
+		boolean testIsActive = true;
+		if(this.getStatut() == null || this.getStatut().equals("SUPPRIME") || this.getStatut().equals("REFUSE")) {
+			testIsActive = false;
+		}
+		return testIsActive;
+	}
 
 	
 }

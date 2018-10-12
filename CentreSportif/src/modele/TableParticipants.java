@@ -92,7 +92,7 @@ public class TableParticipants {
     }
 
     /**
-     * Lecture d'un livre.
+     * Lecture d'un participant.
      */
     public Participant getParticipant(String matricule) throws SQLException
     {

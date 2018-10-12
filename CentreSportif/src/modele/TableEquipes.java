@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 import CentreSportif.Connexion;
 
@@ -18,6 +20,7 @@ public class TableEquipes {
 	private PreparedStatement stmtUpdate;
 	private PreparedStatement stmtDelete;
 	private PreparedStatement stmtDispEquipes;
+	private PreparedStatement stmtDispParticipants;
 	private Connexion cx;
 
 	/**
@@ -35,7 +38,8 @@ public class TableEquipes {
 		stmtUpdateCompoEquipe = cx.getConnection().prepareStatement(
 				"update Equipe set listParticipants = ?  where nomEquipe = ?");
 		stmtDelete = cx.getConnection().prepareStatement("delete from Equipe where nomEquipe = ?");
-		stmtDispEquipes = cx.getConnection().prepareStatement("select nomEquipe, matriculeCap, nomLigue, listParticipants, listResultats from Equipe group by nomligue");
+		//stmtDispEquipes = cx.getConnection().prepareStatement("SELECT * FROM participant NATURAL JOIN Equipe E WHERE nomEquipe = ?");
+		stmtDispParticipants = cx.getConnection().prepareStatement("SELECT * FROM Participant WHERE nomEquipe = ?");
 	}
 
 	/**
@@ -132,6 +136,29 @@ public class TableEquipes {
 		ResultSet rset = stmtDispEquipes.executeQuery();
 		rset.close();
 	}
-
-
+	
+	/**
+	 * lecture des participants de l'équipe
+	 * @throws SQLException
+	 */
+	public ArrayList<Participant> lectureParticipants(String nomEquipe) throws SQLException {
+		stmtDispParticipants.setString(1, nomEquipe);
+		ResultSet rset = stmtDispParticipants.executeQuery();
+		
+		ArrayList<Participant> listeParticipants = new ArrayList<Participant>();
+		
+		while(rset.next()) {
+			Participant tupleParticipant = new Participant();
+        	tupleParticipant.setMatricule(rset.getString("matricule"));
+        	tupleParticipant.setPrenom(rset.getString("prenom"));
+        	tupleParticipant.setNom(rset.getString("nom"));
+        	tupleParticipant.setMotDePasse(rset.getString("motDePasse"));
+        	tupleParticipant.setNomEquipe(rset.getString("nomEquipe"));
+        	tupleParticipant.setStatut(rset.getString("statut"));
+            rset.close();
+            listeParticipants.add(tupleParticipant);
+		}
+		rset.close();
+		return listeParticipants;		
+	}
 }

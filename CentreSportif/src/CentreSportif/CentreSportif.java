@@ -1,9 +1,9 @@
 // Travail fait par :
 //   Charlet Thomas - 18-146-249
-//   NomEquipier2 - Matricule
+//   Hilleriteau Rémi - 18-146-347
 
 package CentreSportif;
-
+//dinf ift287_23db ift287_23 paique
 import java.io.*;
 import java.util.StringTokenizer;
 import java.sql.*;

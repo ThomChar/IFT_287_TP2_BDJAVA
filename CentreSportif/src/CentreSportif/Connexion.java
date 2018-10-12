@@ -46,7 +46,7 @@ public class Connexion
         {
             d = (Driver)Class.forName("org.postgresql.Driver").newInstance();
             DriverManager.registerDriver(d);
-            
+
             if (serveur.equals("local"))
             {
                 conn = DriverManager.getConnection("jdbc:postgresql:" + bd, user, pass);
