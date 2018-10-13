@@ -23,7 +23,7 @@ public class GestionEquipe {
 	 * Ajout d'une nouvelle equipe dans la base de données. S'il existe déjà , une
 	 * exception est levée.
 	 */
-	public void ajouter(String nomEquipe, String matriculeCap, String nomLigue, ArrayList<Participant> listParticipants)
+	public void ajouter(String nomEquipe, String matriculeCap, String nomLigue)
 			throws SQLException, IFT287Exception, Exception {
 		try {
 			// Vérifie si l equipe existe déjà
@@ -31,7 +31,7 @@ public class GestionEquipe {
 				throw new IFT287Exception("Equipe " + nomEquipe + " existe déjà : ");
 
 			// Ajout du participant dans la table des participant
-			equipe.creer(nomEquipe, matriculeCap, nomLigue, listParticipants);
+			equipe.creer(nomEquipe, matriculeCap, nomLigue);
 			// Equipe newEquipe = equipe.getEquipe(nomEquipe);
 			// ligue.ajouter(newEquipe);
 
@@ -68,19 +68,4 @@ public class GestionEquipe {
 		}
 	}
 	
-	/**
-	 * Lecture des participants d'une équipe
-	 */
-	public ArrayList<Participant> lectureParticipants(String nomEquipe) throws SQLException, IFT287Exception, Exception {
-		// Validation
-		Equipe tupleEquipe = equipe.getEquipe(nomEquipe);
-		if (tupleEquipe == null)
-			throw new IFT287Exception("Equipe inexistant: " + nomEquipe);
-		if (!tupleEquipe.isActive())
-			throw new IFT287Exception("Equipe " + nomEquipe + "a encore des participants actifs");
-
-		ArrayList<Participant> listeParticipant =  equipe.lectureParticipants(nomEquipe);
-		
-		return listeParticipant;
-	}
 }

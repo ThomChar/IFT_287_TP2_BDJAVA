@@ -38,7 +38,6 @@ public class TableLigues {
 		stmtUpdateListEquipes = cx.getConnection()
 				.prepareStatement("update Ligue set  listEquipes = ? where nomLigue = ?");
 		stmtDelete = cx.getConnection().prepareStatement("delete from Ligue where nomLigue = ?");
-		stmtDispEquipes = cx.getConnection().prepareStatement("select nomEquipe, matriculeCap, listResultats from Equipe where nomLigue = ? and nomEquipe = ?");
 	}
 
 	/**
@@ -71,8 +70,8 @@ public class TableLigues {
 			tupleLigue.setNbJoueurMaxParEquipe(rset.getInt(1));
 			// A regarder pour recuperer arraylist
 
-			tupleLigue.setListEquipes(
-					new ArrayList<Equipe>((Collection<? extends Equipe>) Arrays.asList(rset.getArray(2))));
+			/*tupleLigue.setListEquipes(
+					new ArrayList<Equipe>((Collection<? extends Equipe>) Arrays.asList(rset.getArray(2))));*/
 			rset.close();
 			return tupleLigue;
 		} else {

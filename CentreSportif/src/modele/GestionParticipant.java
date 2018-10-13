@@ -118,10 +118,10 @@ public class GestionParticipant {
 
 			// Ajout à la liste de l'équipe
 
-			Participant joueur = participant.getParticipant(matricule);
+			/*Participant joueur = participant.getParticipant(matricule);
 			ArrayList<Participant> listJoueurs = equipe.getEquipe(nomEquipe).getListParticipants();
 			listJoueurs.add(joueur);
-			equipe.modifierJoueurEquipe(nomEquipe, listJoueurs);
+			equipe.modifierJoueurEquipe(nomEquipe, listJoueurs);*/
 
 			// Commit
 			cx.commit();
@@ -158,14 +158,14 @@ public class GestionParticipant {
 
 			// Accepte à la liste de l'équipe
 
-			Participant joueur = participant.getParticipant(matricule);
+		/*	Participant joueur = participant.getParticipant(matricule);
 			ArrayList<Participant> listJoueurs = equipe.getEquipe(nomEquipe).getListParticipants();
 			for (Participant membre : listJoueurs) {
 				if (membre.getMatricule().equals(joueur.getMatricule())) {
 					membre.setStatut("ACCEPTE");
 				}
 			}
-			equipe.modifierJoueurEquipe(nomEquipe, listJoueurs);
+			equipe.modifierJoueurEquipe(nomEquipe, listJoueurs);*/
 
 			// Commit
 			cx.commit();
@@ -198,10 +198,10 @@ public class GestionParticipant {
 
 			// Refuse à la liste de l'équipe
 
-			Participant joueur = participant.getParticipant(matricule);
+			/*Participant joueur = participant.getParticipant(matricule);
 			ArrayList<Participant> listJoueurs = equipe.getEquipe(nomEquipe).getListParticipants();
 			listJoueurs.remove(joueur);
-			equipe.modifierJoueurEquipe(nomEquipe, listJoueurs);
+			equipe.modifierJoueurEquipe(nomEquipe, listJoueurs);*/
 
 			// Commit
 			cx.commit();
@@ -237,11 +237,11 @@ public class GestionParticipant {
 			participant.supprimeParEquipe(nomEquipe, matricule);
 			// Refuse à la liste de l'équipe
 
-			Participant joueur = participant.getParticipant(matricule);
+			/*Participant joueur = participant.getParticipant(matricule);
 			ArrayList<Participant> listJoueurs = equipe.getEquipe(nomEquipe).getListParticipants();
 			listJoueurs.remove(joueur);
 
-			equipe.modifierJoueurEquipe(nomEquipe, listJoueurs);
+			equipe.modifierJoueurEquipe(nomEquipe, listJoueurs);*/
 
 			// Commit
 			cx.commit();
@@ -276,13 +276,30 @@ public class GestionParticipant {
 			throw e;
 		}
 	}
+	
+
+	/**
+	 * Lecture des participants d'une équipe
+	 */
+	public ArrayList<Participant> lectureParticipants(String nomEquipe) throws SQLException, IFT287Exception, Exception {
+		// Validation
+		Equipe tupleEquipe = equipe.getEquipe(nomEquipe);
+		if (tupleEquipe == null)
+			throw new IFT287Exception("Equipe inexistant: " + nomEquipe);
+		if (!tupleEquipe.isActive())
+			throw new IFT287Exception("Equipe " + nomEquipe + "a encore des participants actifs");
+
+		ArrayList<Participant> listeParticipant =  participant.lectureParticipants(nomEquipe);
+		
+		return listeParticipant;
+	}
 
 	/**
 	 * affichage de l'ensemble des participants de la table.
 	 */
 	public void affichageParticipants() throws SQLException, IFT287Exception, Exception {
 		try {
-			participant.afficher();
+			participant.afficherParticipant();
 
 			// Commit
 			cx.commit();
