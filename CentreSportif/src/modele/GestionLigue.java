@@ -52,11 +52,11 @@ public class GestionLigue {
      * Ajout d'une nouvelle ligue dans la base de données. S'il existe déjà , une
      * exception est levée.
      */		
-    public void ajouterLigue(String nomLigue, int nbJoueurMaxParEquipe, ArrayList<Equipe> listEquipes) throws SQLException, IFT287Exception, Exception
+    public void ajouterLigue(String nomLigue, int nbJoueurMaxParEquipe) throws SQLException, IFT287Exception, Exception
     {
         try
         {
-        	Ligue tupleLigue = new Ligue(nomLigue, listEquipes, nbJoueurMaxParEquipe);
+        	Ligue tupleLigue = new Ligue(nomLigue, nbJoueurMaxParEquipe);
             // Vérifie si la ligue existe déjà
             if (ligue.existe(nomLigue))
                 throw new IFT287Exception("Ligue "+nomLigue+" existe déjà : ");
@@ -64,7 +64,7 @@ public class GestionLigue {
                 throw new IFT287Exception("Ligue "+nomLigue+" comprend une équipe déjà dans une autre ligue ");
 
             // Ajout de la ligue dans la table des ligures
-            ligue.creation(nomLigue, nbJoueurMaxParEquipe, listEquipes);;
+            ligue.creationEmptyLigue(nomLigue, nbJoueurMaxParEquipe);
             
             // Commit
             cx.commit();

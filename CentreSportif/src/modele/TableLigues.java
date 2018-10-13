@@ -28,11 +28,11 @@ public class TableLigues {
 	public TableLigues(Connexion cx) throws SQLException {
 		this.cx = cx;
 		stmtExiste = cx.getConnection()
-				.prepareStatement("select nomLigue, nbJoueurMaxParEquipe, listEquipes, from Ligue where nomLigue = ?");
+				.prepareStatement("select * from ligue where nomLigue = ?");
 		stmtInsertEmpty = cx.getConnection().prepareStatement(
-				"insert into Ligue (nomLigue, nbJoueurMaxParEquipe) " + "values (?,?)");
+				"insert into Ligue (nomLigue, nbJoueursMaxParEquipe) " + "values (?,?)");
 		stmtInsert = cx.getConnection().prepareStatement(
-				"insert into Ligue (nomLigue, nbJoueurMaxParEquipe, listEquipes) " + "values (?,?,?)");
+				"insert into Ligue (nomLigue, nbJoueursMaxParEquipe, listEquipes) " + "values (?,?,?)");
 		stmtUpdate = cx.getConnection()
 				.prepareStatement("update Ligue set  nbJoueurMaxParEquipe = ? where nomLigue = ?");
 		stmtUpdateListEquipes = cx.getConnection()

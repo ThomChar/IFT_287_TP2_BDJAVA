@@ -6,6 +6,10 @@ package CentreSportif;
 //dinf ift287_23db ift287_23 paique
 import java.io.*;
 import java.util.StringTokenizer;
+
+import modele.GestionLigue;
+import modele.TableLigues;
+
 import java.sql.*;
 
 /**
@@ -61,6 +65,18 @@ public class CentreSportif
             // N'hésitez pas à le faire!
             cx = new Connexion(args[0], args[1], args[2], args[3]);
             BufferedReader reader = ouvrirFichier(args);
+            
+            
+            // on teste une transaction avec la base de donn�e
+            
+            // ajout d'une ligue
+            TableLigues tableLigue = new TableLigues(cx);
+            GestionLigue gestionLigue = new GestionLigue(tableLigue);
+            gestionLigue.ajouterLigue("Quidditch", 12);
+            
+            
+            
+            
             String transaction = lireTransaction(reader);
             while (!finTransaction(transaction))
             {
