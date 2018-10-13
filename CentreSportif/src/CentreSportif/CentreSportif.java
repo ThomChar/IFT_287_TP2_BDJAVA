@@ -3,15 +3,21 @@
 //   Hilleriteau Rémi - 18-146-347
 
 package CentreSportif;
-//dinf ift287_23db ift287_23 paique
+
 import java.io.*;
 import java.util.StringTokenizer;
 
+import modele.GestionEquipe;
 import modele.GestionLigue;
+import modele.GestionParticipant;
+import modele.GestionResultat;
+import modele.TableEquipes;
 import modele.TableLigues;
+import modele.TableParticipants;
+import modele.TableResultats;
 
 import java.sql.*;
-
+//Les paramètres pour exécuter notre programme dinf ift287_23db ift287_23 paique
 /**
  * Fichier de base pour le TP2 du cours IFT287
  *
@@ -45,13 +51,21 @@ import java.sql.*;
 public class CentreSportif
 {
     private static Connexion cx;
+    private static GestionEquipe gestionEquipe;
+    private static GestionLigue gestionLigue;
+    private static GestionParticipant gestionParticipant;
+    private static GestionResultat gestionResultat;
+    private static TableEquipes tableEquipes;
+    private static TableLigues tableLigues;
+    private static TableParticipants tableParticipants;
+    private static TableResultats tableResultats;
 
     /**
      * @param args
      */
     public static void main(String[] args) throws Exception
     {
-        if (args.length < 4)
+    	if (args.length < 4)
         {
             System.out.println("Usage: java CentreSportif.CentreSportif <serveur> <bd> <user> <password> [<fichier-transactions>]");
             return;
@@ -64,31 +78,32 @@ public class CentreSportif
             // Il est possible que vous ayez Ã  dÃ©placer la connexion ailleurs.
             // N'hÃ©sitez pas Ã  le faire!
             cx = new Connexion(args[0], args[1], args[2], args[3]);
-            BufferedReader reader = ouvrirFichier(args);
-            
-            
-            // on teste une transaction avec la base de donnée
-            
-            // ajout d'une ligue
-            TableLigues tableLigue = new TableLigues(cx);
-            GestionLigue gestionLigue = new GestionLigue(tableLigue);
-            gestionLigue.ajouterLigue("Quidditch", 12);
-            
-            
-            
-            
+            BufferedReader reader = ouvrirFichier(args);  
             String transaction = lireTransaction(reader);
             while (!finTransaction(transaction))
             {
                 executerTransaction(transaction);
                 transaction = lireTransaction(reader);
             }
+            Init();
         }
         finally
         {
             if (cx != null)
                 cx.fermer();
         }
+    }
+    
+    static void Init() throws SQLException, IFT287Exception
+    {
+    	tableLigues = new TableLigues(cx);
+    	tableEquipes = new TableEquipes(cx);
+    	tableParticipants = new TableParticipants(cx);
+    	tableResultats = new TableResultats(cx);
+        gestionLigue = new GestionLigue(tableLigues);
+        gestionEquipe = new GestionEquipe(tableEquipes);
+        gestionParticipant = new GestionParticipant(tableParticipants);
+        gestionResultat = new GestionResultat(tableResultats);
     }
 
     /**
@@ -121,10 +136,19 @@ public class CentreSportif
                     // Lire les parametres ici et appeler la bonne methode
                     // de traitement pour la transaction
                 }
+                else if(command.equals("ajouterLigue"))
+                {
+                	//int j = Integer.parseInt(tokenizer.nextToken());
+                	String dateEmprunt = readString(tokenizer);
+                	int idMembre = readInt(tokenizer);
+                    System.out.println("1-"+dateEmprunt+"2-"+idMembre);
+                	gestionLigue.ajouterLigue(dateEmprunt, idMembre);	
+                }
                 else
                 {
                     System.out.println(" : Transaction non reconnue");
                 }
+                
             }
         }
         catch (Exception e)

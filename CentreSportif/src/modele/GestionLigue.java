@@ -54,10 +54,14 @@ public class GestionLigue {
      */		
     public void ajouterLigue(String nomLigue, int nbJoueurMaxParEquipe) throws SQLException, IFT287Exception, Exception
     {
-        try
+    	
+    	System.out.println("Je suis passé ici !");
+        /*
+    	try
         {
         	Ligue tupleLigue = new Ligue(nomLigue, nbJoueurMaxParEquipe);
             // Vérifie si la ligue existe déjà
+        	
             if (ligue.existe(nomLigue))
                 throw new IFT287Exception("Ligue "+nomLigue+" existe déjà : ");
             if (!tupleLigue.testNewEquipes(nomLigue))
@@ -74,6 +78,7 @@ public class GestionLigue {
             cx.rollback();
             throw e;
         }
+        */
     }
     
     /**
