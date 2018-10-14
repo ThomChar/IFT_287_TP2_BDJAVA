@@ -54,9 +54,6 @@ public class GestionLigue {
      */		
     public void ajouterLigue(String nomLigue, int nbJoueurMaxParEquipe) throws SQLException, IFT287Exception, Exception
     {
-    	
-    	System.out.println("Je suis passé ici !");
-        /*
     	try
         {
         	Ligue tupleLigue = new Ligue(nomLigue, nbJoueurMaxParEquipe);
@@ -78,7 +75,6 @@ public class GestionLigue {
             cx.rollback();
             throw e;
         }
-        */
     }
     
     /**

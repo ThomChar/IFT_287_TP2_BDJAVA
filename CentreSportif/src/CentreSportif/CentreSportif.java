@@ -75,17 +75,18 @@ public class CentreSportif
         
         try
         {
+        	
             // Il est possible que vous ayez à déplacer la connexion ailleurs.
             // N'hésitez pas à le faire!
             cx = new Connexion(args[0], args[1], args[2], args[3]);
             BufferedReader reader = ouvrirFichier(args);  
             String transaction = lireTransaction(reader);
+            Init();
             while (!finTransaction(transaction))
             {
                 executerTransaction(transaction);
                 transaction = lireTransaction(reader);
             }
-            Init();
         }
         finally
         {
@@ -141,8 +142,10 @@ public class CentreSportif
                 	//int j = Integer.parseInt(tokenizer.nextToken());
                 	String dateEmprunt = readString(tokenizer);
                 	int idMembre = readInt(tokenizer);
-                    System.out.println("1-"+dateEmprunt+"2-"+idMembre);
-                	gestionLigue.ajouterLigue(dateEmprunt, idMembre);	
+                   /* System.out.println("\n1-"+dateEmprunt+"2-"+idMembre+"-");
+                    dateEmprunt="llllll";
+                    idMembre=5;*/
+                	gestionLigue.ajouterLigue(dateEmprunt, idMembre);
                 }
                 else
                 {
