@@ -124,28 +124,82 @@ public class CentreSportif
                 // les commandes de votre programme. Vous pouvez ajouter autant
                 // de else if que necessaire. Vous n'avez pas a traiter la
                 // commande "quitter".
-                if (command.equals("commande1"))
+               if(command.equals("inscrireParticipant"))
                 {
-                    // Lecture des parametres
-                    String param1 = readString(tokenizer);
-                    Date param2 = readDate(tokenizer);
-                    int param3 = readInt(tokenizer);
-                    // Appel de la methode des gestionnaires qui traite la transaction specifique
+                	String prenom = readString(tokenizer);
+                	String nom = readString(tokenizer);
+                	String motDePasse = readString(tokenizer);
+                	String matricule = readString(tokenizer);
+                	gestionParticipant.ajouter(matricule, prenom, prenom, motDePasse, null, null);
                 }
-                else if (command.equals("commande2"))
+                else if(command.equals("supprimerParicipant"))
                 {
-                    // Lire les parametres ici et appeler la bonne methode
-                    // de traitement pour la transaction
+                	String matricule = readString(tokenizer);
+                	gestionParticipant.supprime(matricule);
                 }
                 else if(command.equals("ajouterLigue"))
                 {
-                	//int j = Integer.parseInt(tokenizer.nextToken());
-                	String dateEmprunt = readString(tokenizer);
-                	int idMembre = readInt(tokenizer);
-                   /* System.out.println("\n1-"+dateEmprunt+"2-"+idMembre+"-");
-                    dateEmprunt="llllll";
-                    idMembre=5;*/
-                	gestionLigue.ajouterLigue(dateEmprunt, idMembre);
+                	String nomLigue = readString(tokenizer);
+                	int nbJoueur = readInt(tokenizer);
+                	gestionLigue.ajouterLigue(nomLigue, nbJoueur);
+                }
+                else if(command.equals("supprimerLigue"))
+                {
+                	String nomLigue = readString(tokenizer);
+                	gestionLigue.supprime(nomLigue);
+                }
+                else if(command.equals("ajouterEquipe"))
+                {
+                	String nomLigue = readString(tokenizer);
+                	String nomEquipe = readString(tokenizer);
+                	String matriculeCap = readString(tokenizer);
+                	gestionEquipe.ajouter(nomEquipe, matriculeCap, nomLigue);
+                }
+                else if(command.equals("ajouterJoueur"))
+                {
+                	String nomEquipe = readString(tokenizer);
+                	String matricule = readString(tokenizer);
+                	gestionParticipant.ajouteParEquipe(nomEquipe, matricule);
+                }
+                else if(command.equals("accepterJoueur"))
+                {
+                	String nomEquipe = readString(tokenizer);
+                	String matricule = readString(tokenizer);
+                	gestionParticipant.accepteParEquipe(nomEquipe, matricule);
+                }
+                else if(command.equals("refuserJoueur"))
+                {
+                	String nomEquipe = readString(tokenizer);
+                	String matricule = readString(tokenizer);
+                	gestionParticipant.refuseParEquipe(nomEquipe, matricule);
+                }
+                else if(command.equals("supprimerJoueur"))
+                {
+                	String nomEquipe = readString(tokenizer);
+                	String matricule = readString(tokenizer);
+                	gestionParticipant.supprimeParEquipe(nomEquipe, matricule);
+                }
+                else if(command.equals("afficherEquipes"))
+                {
+                	// gestionEquipe.afficher();
+                }
+                else if(command.equals("afficherEquipe"))
+                {
+                	String nomEquipe = readString(tokenizer);
+                	// gestionEquipe.afficherUneEquipe(nomEquipe);
+                }
+                else if(command.equals("afficherLigue"))
+                {
+                	String nomLigue = readString(tokenizer);
+                	// gestionLigue.afficherUneLigue(nomLigue);
+                }
+                else if(command.equals("ajouterResultat"))
+                {
+                	String nomEquipeA = readString(tokenizer);
+                	int scoreEquipeA = readInt(tokenizer);
+                	String nomEquipeB = readString(tokenizer);
+                	int scoreEquipeB = readInt(tokenizer);
+                	gestionResultat.InscrireResulat(nomEquipeA, nomEquipeB, scoreEquipeA, scoreEquipeB);
                 }
                 else
                 {
