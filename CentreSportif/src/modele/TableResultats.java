@@ -3,6 +3,7 @@ package modele;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import CentreSportif.Connexion;
 
@@ -16,6 +17,7 @@ public class TableResultats {
 	private PreparedStatement stmtNbMGagne;
 	private PreparedStatement stmtNbMPerdu;
 	private PreparedStatement stmtNbMNul;
+	private PreparedStatement stmtDispResultatsEquipe;
 	private Connexion cx;
 
 	/**
@@ -40,6 +42,7 @@ public class TableResultats {
 				.prepareStatement("select count(*) from Resultat where (nomEquipeA = ? and scoreEquipeA < scoreEquipeB) || (nomEquipeB = ? and scoreEquipeA > scoreEquipeB)");
 		stmtNbMNul = cx.getConnection()
 				.prepareStatement("select count(*) from Resultat where (nomEquipeA = ? || nomEquipeB = ?) and scoreEquipeA = scoreEquipeB");
+		stmtDispResultatsEquipe = cx.getConnection().prepareStatement("select * from Resultat where nomEquipe = ?");
 
 	}
 
@@ -155,6 +158,30 @@ public class TableResultats {
 	public void afficher() throws SQLException {
 		ResultSet rset = stmtDispResultat.executeQuery();
 		rset.close();
+	}
+	
+	/**
+	 * lecture des resultats de l'équipe
+	 * 
+	 * @throws SQLException
+	 */
+	public ArrayList<Resultat> lectureResultats(String nomEquipe) throws SQLException {
+		stmtDispResultatsEquipe.setString(1, nomEquipe);
+		ResultSet rset = stmtDispResultatsEquipe.executeQuery();
+
+		ArrayList<Resultat> listResultats = new ArrayList<Resultat>();
+
+		while (rset.next()) {
+			Resultat tupleResultat = new Resultat();
+			tupleResultat.setNomEquipeA(rset.getString("nomEquipeA"));
+			tupleResultat.setNomEquipeB(rset.getString("nomEquipeB"));
+			tupleResultat.setScoreEquipeA(rset.getInt("scoreEquipeA"));
+			tupleResultat.setScoreEquipeB(rset.getInt("scoreEquipeB"));
+			rset.close();
+			listResultats.add(tupleResultat);
+		}
+		rset.close();
+		return listResultats;
 	}
 
 }

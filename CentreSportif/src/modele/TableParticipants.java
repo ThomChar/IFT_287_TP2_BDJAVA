@@ -6,6 +6,7 @@ import java.sql.SQLException;
 //import java.sql.Types;
 //import java.util.LinkedList;
 //import java.util.List;
+import java.util.ArrayList;
 
 import CentreSportif.Connexion;
 
@@ -21,6 +22,7 @@ public class TableParticipants {
     private PreparedStatement stmtUpdateMotDePasse;
     private PreparedStatement stmtDelete;
     private PreparedStatement stmtDispParticipant;
+    private PreparedStatement stmtDispParticipants;
     private Connexion cx;
 
     /**
@@ -41,10 +43,11 @@ public class TableParticipants {
                         + "values (?,?,?,?,null,null)");
         stmtUpdate = cx.getConnection()
                 .prepareStatement("update Participant set nomEquipe = ?, statut = ? " + "where matricule = ?");
-        stmtDelete = cx.getConnection().prepareStatement("delete from Participant where matricule = ?");
         stmtUpdateNomPrenom = cx.getConnection().prepareStatement("update Participant set nom = ?, prenom = ? " + "where matricule = ?");
         stmtUpdateMotDePasse = cx.getConnection().prepareStatement("update Participant set motDePasse = ? " + "where matricule = ?");
+        stmtDelete = cx.getConnection().prepareStatement("delete from Participant where matricule = ?");
         stmtDispParticipant = cx.getConnection().prepareStatement("select matricule, prenom, nom, motDePasse, nomEquipe, statut from Participant");
+        stmtDispParticipants = cx.getConnection().prepareStatement("select * from Participant where nomEquipe = ?");
     }
 
     /**
@@ -209,9 +212,34 @@ public class TableParticipants {
     /**
      * afficher les participants.
      */ 
-    public void afficher() throws SQLException
+    public void afficherParticipant() throws SQLException
     {
     	ResultSet rset = stmtDispParticipant.executeQuery();
         rset.close();
     }
+    
+    /**
+	 * lecture des participants de l'équipe
+	 * @throws SQLException
+	 */
+	public ArrayList<Participant> lectureParticipants(String nomEquipe) throws SQLException {
+		stmtDispParticipants.setString(1, nomEquipe);
+		ResultSet rset = stmtDispParticipants.executeQuery();
+		
+		ArrayList<Participant> listeParticipants = new ArrayList<Participant>();
+		
+		while(rset.next()) {
+			Participant tupleParticipant = new Participant();
+        	tupleParticipant.setMatricule(rset.getString("matricule"));
+        	tupleParticipant.setPrenom(rset.getString("prenom"));
+        	tupleParticipant.setNom(rset.getString("nom"));
+        	tupleParticipant.setMotDePasse(rset.getString("motDePasse"));
+        	tupleParticipant.setNomEquipe(rset.getString("nomEquipe"));
+        	tupleParticipant.setStatut(rset.getString("statut"));
+            rset.close();
+            listeParticipants.add(tupleParticipant);
+		}
+		rset.close();
+		return listeParticipants;		
+	}
  }
