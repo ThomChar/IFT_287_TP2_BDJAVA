@@ -9,12 +9,17 @@ import CentreSportif.IFT287Exception;
 public class GestionEquipe {
 
 	private TableEquipes equipe;
+	private TableLigues ligue;
 	private Connexion cx;
 
 	/**
 	 * Creation d'une instance
 	 */
-	public GestionEquipe(TableEquipes equipe) throws IFT287Exception {
+	public GestionEquipe(TableEquipes equipe, TableLigues ligue) throws IFT287Exception {
+		if (ligue.getConnexion() != equipe.getConnexion())
+			throw new IFT287Exception(
+					"Les instances de ligue, et de equipe n'utilisent pas la même connexion au serveur");
+		
 		this.cx = equipe.getConnexion();
 		this.equipe = equipe;
 	}
@@ -68,4 +73,17 @@ public class GestionEquipe {
 		}
 	}
 	
+	/**
+	 * Lecture des equipes d'une ligue
+	 */
+	public ArrayList<Equipe> lectureParticipants(String nomLigue) throws SQLException, IFT287Exception, Exception {
+		// Validation
+		Ligue tupleLigue = ligue.getLigue(nomLigue);
+		if (tupleLigue == null)
+			throw new IFT287Exception("Ligue inexistante : " + nomLigue);
+
+		ArrayList<Equipe> listEquipes =  equipe.lectureEquipes(nomLigue);
+		
+		return listEquipes;
+	}
 }

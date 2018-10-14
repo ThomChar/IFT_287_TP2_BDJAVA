@@ -286,8 +286,6 @@ public class GestionParticipant {
 		Equipe tupleEquipe = equipe.getEquipe(nomEquipe);
 		if (tupleEquipe == null)
 			throw new IFT287Exception("Equipe inexistant: " + nomEquipe);
-		if (!tupleEquipe.isActive())
-			throw new IFT287Exception("Equipe " + nomEquipe + "a encore des participants actifs");
 
 		ArrayList<Participant> listeParticipant =  participant.lectureParticipants(nomEquipe);
 		

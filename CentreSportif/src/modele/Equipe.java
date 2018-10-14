@@ -13,6 +13,9 @@ public class Equipe {
 	private String nomLigue;
 	private Ligue ligue;
 	private ArrayList<Resultat> listResultats;
+	private int nbMGagne;
+	private int nbMPerdu;
+	private int nbMNul;
 	
 	//Builders
 	
@@ -30,6 +33,9 @@ public class Equipe {
 		this.nomLigue = nomLigue;
 		this.ligue = null;
 		this.listResultats = new ArrayList<Resultat>();
+		this.nbMGagne = 0;
+		this.nbMPerdu = 0;
+		this.nbMNul = 0;
 	}
 	
 	
@@ -43,11 +49,38 @@ public class Equipe {
 		this.nomLigue = nomLigue;
 		this.ligue = null;
 		this.listResultats = new ArrayList<Resultat>();
+		this.nbMGagne = 0;
+		this.nbMPerdu = 0;
+		this.nbMNul = 0;
 	}
 
 	//Getters & Setters
 	
 
+
+	public int getNbMGagne() {
+		return nbMGagne;
+	}
+
+	public void setNbMGagne(int nbMGagne) {
+		this.nbMGagne = nbMGagne;
+	}
+
+	public int getNbMPerdu() {
+		return nbMPerdu;
+	}
+
+	public void setNbMPerdu(int nbMPerdu) {
+		this.nbMPerdu = nbMPerdu;
+	}
+
+	public int getNbMNul() {
+		return nbMNul;
+	}
+
+	public void setNbMNul(int nbMNul) {
+		this.nbMNul = nbMNul;
+	}
 
 	public String getNomEquipe() {
 		return nomEquipe;
@@ -116,7 +149,5 @@ public class Equipe {
 		}
 		return testIsActive;
 	}
-
-	
 
 }

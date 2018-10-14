@@ -18,6 +18,7 @@ public class TableResultats {
 	private PreparedStatement stmtNbMPerdu;
 	private PreparedStatement stmtNbMNul;
 	private PreparedStatement stmtDispResultatsEquipe;
+	private PreparedStatement stmtExisteResEquipe;
 	private Connexion cx;
 
 	/**
@@ -28,6 +29,8 @@ public class TableResultats {
 		this.cx = cx;
 		stmtExiste = cx.getConnection().prepareStatement(
 				"select nomEquipeA, nomEquipeB from Resultat where nomEquipeA = ? and nomEquipeB = ?");
+		stmtExisteResEquipe = cx.getConnection().prepareStatement(
+				"select nomEquipeA, nomEquipeB from Resultat where nomEquipeA = ? || nomEquipeB = ?");
 		stmtInsert = cx.getConnection().prepareStatement(
 				"insert into Resultat (nomEquipeA, nomEquipeB, scoreEquipeA, scoreEquipeB) " + "values (?,?,?,?)");
 		stmtUpdate = cx.getConnection().prepareStatement(
@@ -42,7 +45,7 @@ public class TableResultats {
 				.prepareStatement("select count(*) from Resultat where (nomEquipeA = ? and scoreEquipeA < scoreEquipeB) || (nomEquipeB = ? and scoreEquipeA > scoreEquipeB)");
 		stmtNbMNul = cx.getConnection()
 				.prepareStatement("select count(*) from Resultat where (nomEquipeA = ? || nomEquipeB = ?) and scoreEquipeA = scoreEquipeB");
-		stmtDispResultatsEquipe = cx.getConnection().prepareStatement("select * from Resultat where nomEquipe = ?");
+		stmtDispResultatsEquipe = cx.getConnection().prepareStatement("select * from Resultat where nomEquipeA = ? || nomEquipeB = ?");
 
 	}
 
@@ -60,6 +63,18 @@ public class TableResultats {
 		stmtExiste.setString(1, nomEquipeA);
 		stmtExiste.setString(2, nomEquipeB);
 		ResultSet rset = stmtExiste.executeQuery();
+		boolean equipeExiste = rset.next();
+		rset.close();
+		return equipeExiste;
+	}
+	
+	/**
+	 * Vérifie si un resultat existe.
+	 */
+	public boolean existeResEquipe(String nomEquipe) throws SQLException {
+		stmtExisteResEquipe.setString(1, nomEquipe);
+		stmtExisteResEquipe.setString(2, nomEquipe);
+		ResultSet rset = stmtExisteResEquipe.executeQuery();
 		boolean equipeExiste = rset.next();
 		rset.close();
 		return equipeExiste;
