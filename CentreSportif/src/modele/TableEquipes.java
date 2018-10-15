@@ -22,6 +22,7 @@ public class TableEquipes {
 	private PreparedStatement stmtDispEquipes;
 	private PreparedStatement stmtDispEquipesLigue;
 	private PreparedStatement stmtDispParticipants;
+	private PreparedStatement stmtDispEquipesParLigue;
 	private Connexion cx;
 
 	/**
@@ -30,14 +31,15 @@ public class TableEquipes {
 	public TableEquipes(Connexion cx) throws SQLException {
 		this.cx = cx;
 		stmtExiste = cx.getConnection()
-				.prepareStatement("select nomEquipe, matriculeCap, nomLigue from Equipe where nomEquipe = ?");
+				.prepareStatement("select nomEquipe, matriculeCapitaine, nomLigue from Equipe where nomEquipe = ?");
 		stmtInsert = cx.getConnection()
-				.prepareStatement("insert into Equipe (nomEquipe, matriculeCap, nomLigue) " + "values (?,?,?)");
+				.prepareStatement("insert into Equipe (nomEquipe, matriculeCapitaine, nomLigue) " + "values (?,?,?)");
 		stmtUpdate = cx.getConnection()
-				.prepareStatement("update Equipe set nomEquipe = ?,matriculeCap = ? where nomEquipe = ?");
+				.prepareStatement("update Equipe set nomEquipe = ?,matriculeCapitaine = ? where nomEquipe = ?");
 		stmtDelete = cx.getConnection().prepareStatement("delete from Equipe where nomEquipe = ?");
-		stmtDispEquipes = cx.getConnection().prepareStatement("select nomEquipe, matriculeCap, nomLigue from Equipe");
+		stmtDispEquipes = cx.getConnection().prepareStatement("select nomEquipe, matriculeCapitaine, nomLigue from Equipe");
 		stmtDispEquipesLigue = cx.getConnection().prepareStatement("select * from Equipe where nomLigue = ?");
+		stmtDispEquipesParLigue = cx.getConnection().prepareStatement("select * from Equipe order by nomLigue");
 	}
 
 	/**
@@ -67,8 +69,8 @@ public class TableEquipes {
 		if (rset.next()) {
 			Equipe tupleEquipe = new Equipe();
 			tupleEquipe.setNomEquipe(nomEquipe);
-			tupleEquipe.setMatriculeCap(rset.getString(1));
-			tupleEquipe.setNomLigue(rset.getString(2));
+			tupleEquipe.setMatriculeCap(rset.getString(2));
+			tupleEquipe.setNomLigue(rset.getString(3));
 
 			// A regarder pour recuperer arraylist
 			/*
@@ -105,28 +107,6 @@ public class TableEquipes {
 	}
 
 	/**
-	 * affiche une equipe precise.
-	 * 
-	 * @throws SQLException
-	 */
-	public void afficherEquipe(String nomEquipe) throws SQLException {
-
-		stmtExiste.setString(1, nomEquipe);
-		ResultSet rset = stmtExiste.executeQuery();
-		rset.close();
-	}
-
-	/**
-	 * affiche la liste des equipes.
-	 * 
-	 * @throws SQLException
-	 */
-	public void afficherListEquipes() throws SQLException {
-		ResultSet rset = stmtDispEquipes.executeQuery();
-		rset.close();
-	}
-
-	/**
 	 * lecture des equipes de l'équipe
 	 * 
 	 * @throws SQLException
@@ -143,6 +123,28 @@ public class TableEquipes {
 			tupleEquipe.setMatriculeCap("matriculeCap");
 			tupleEquipe.setNomLigue(rset.getString("nomLigue"));
 			rset.close();
+			listEquipes.add(tupleEquipe);
+		}
+		rset.close();
+		return listEquipes;
+	}
+	
+	/**
+	 * lecture des equipes de l'équipe
+	 * 
+	 * @throws SQLException
+	 */
+	public ArrayList<Equipe> lectureEquipes() throws SQLException {
+		ResultSet rset = stmtDispEquipesParLigue.executeQuery();
+
+		ArrayList<Equipe> listEquipes = new ArrayList<Equipe>();
+
+		while (rset.next()) {
+			Equipe tupleEquipe = new Equipe();
+			tupleEquipe.setNomEquipe(rset.getString("nomEquipe"));
+			tupleEquipe.setMatriculeCap("matriculeCap");
+			tupleEquipe.setNomLigue(rset.getString("nomLigue"));
+			//rset.close();
 			listEquipes.add(tupleEquipe);
 		}
 		rset.close();

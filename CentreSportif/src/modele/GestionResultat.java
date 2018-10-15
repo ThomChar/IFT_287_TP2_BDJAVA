@@ -94,5 +94,6 @@ public class GestionResultat {
 			throw e;
 		}
 	}
+	
 
 }

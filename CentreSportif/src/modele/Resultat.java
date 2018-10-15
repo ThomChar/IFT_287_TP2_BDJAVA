@@ -70,5 +70,13 @@ public class Resultat {
 	public void setNomEquipeB(String nomEquipeB) {
 		this.nomEquipeB = nomEquipeB;
 	}
+
+	@Override
+	public String toString() {
+		return "Resultat [nomEquipeA=" + nomEquipeA + ", nomEquipeB=" + nomEquipeB + ", scoreEquipeA=" + scoreEquipeA
+				+ ", scoreEquipeB=" + scoreEquipeB + "]";
+	}
+	
+	
 	
 }

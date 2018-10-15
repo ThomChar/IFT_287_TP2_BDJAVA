@@ -102,7 +102,7 @@ public class CentreSportif
     	tableParticipants = new TableParticipants(cx);
     	tableResultats = new TableResultats(cx);
         gestionLigue = new GestionLigue(tableLigues);
-        gestionEquipe = new GestionEquipe(tableEquipes);
+        gestionEquipe = new GestionEquipe(tableEquipes,tableParticipants,tableLigues,tableResultats);
         gestionParticipant = new GestionParticipant(tableParticipants);
         gestionResultat = new GestionResultat(tableResultats);
     }
@@ -153,6 +153,7 @@ public class CentreSportif
                 	String nomLigue = readString(tokenizer);
                 	String nomEquipe = readString(tokenizer);
                 	String matriculeCap = readString(tokenizer);
+                	gestionParticipant.accepteParEquipe(nomEquipe, matriculeCap);
                 	gestionEquipe.ajouter(nomEquipe, matriculeCap, nomLigue);
                 }
                 else if(command.equals("ajouterJoueur"))
@@ -179,21 +180,21 @@ public class CentreSportif
                 	String matricule = readString(tokenizer);
                 	gestionParticipant.supprimeParEquipe(nomEquipe, matricule);
                 }
-                else if(command.equals("afficherEquipes"))
+                else if(command.equals("afficherEquipes"))	//OK
                 {
-                	// gestionEquipe.afficher();
+                	gestionEquipe.affichageEquipes();
                 }
-                else if(command.equals("afficherEquipe"))
+                else if(command.equals("afficherEquipe"))   //OK
                 {
                 	String nomEquipe = readString(tokenizer);
-                	// gestionEquipe.afficherUneEquipe(nomEquipe);
+                	gestionEquipe.affichageEquipe(nomEquipe);
                 }
                 else if(command.equals("afficherLigue"))
                 {
                 	String nomLigue = readString(tokenizer);
-                	// gestionLigue.afficherUneLigue(nomLigue);
+                	gestionEquipe.lectureEquipesLigue(nomLigue);
                 }
-                else if(command.equals("ajouterResultat"))
+                else if(command.equals("ajouterResultat"))	
                 {
                 	String nomEquipeA = readString(tokenizer);
                 	int scoreEquipeA = readInt(tokenizer);

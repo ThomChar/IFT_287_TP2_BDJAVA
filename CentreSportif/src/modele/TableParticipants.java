@@ -109,6 +109,7 @@ public class TableParticipants {
         	tupleParticipant.setNom(rset.getString(3));
         	tupleParticipant.setMotDePasse(rset.getString(4));
         	tupleParticipant.setNomEquipe(rset.getString(5));
+        	tupleParticipant.setStatut(rset.getString(6));
             rset.close();
             return tupleParticipant;
         }
@@ -225,7 +226,6 @@ public class TableParticipants {
 	public ArrayList<Participant> lectureParticipants(String nomEquipe) throws SQLException {
 		stmtDispParticipants.setString(1, nomEquipe);
 		ResultSet rset = stmtDispParticipants.executeQuery();
-		
 		ArrayList<Participant> listeParticipants = new ArrayList<Participant>();
 		
 		while(rset.next()) {
@@ -236,7 +236,6 @@ public class TableParticipants {
         	tupleParticipant.setMotDePasse(rset.getString("motDePasse"));
         	tupleParticipant.setNomEquipe(rset.getString("nomEquipe"));
         	tupleParticipant.setStatut(rset.getString("statut"));
-            rset.close();
             listeParticipants.add(tupleParticipant);
 		}
 		rset.close();

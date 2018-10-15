@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Equipe {
 	
 	//Attributes
-	
+
 	private String nomEquipe;
 	private ArrayList<Participant> listParticipants;
 	private String matriculeCap;
@@ -117,6 +117,12 @@ public class Equipe {
 		return testIsActive;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Equipe [nomEquipe=" + nomEquipe + ", matriculeCap="+ matriculeCap + ", nomLigue=" + nomLigue + ",\nlistParticipants=" + listParticipants + ",\nlistResultats=" + listResultats + "]";
+	}
+	public String toStringSimpleEquipe() {
+		return "Equipe [nomEquipe=" + nomEquipe + ", matriculeCap="+ matriculeCap + ", nomLigue=" + nomLigue + "]";
+	}
 
 }

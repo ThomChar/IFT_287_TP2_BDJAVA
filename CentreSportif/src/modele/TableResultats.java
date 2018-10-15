@@ -42,7 +42,7 @@ public class TableResultats {
 				.prepareStatement("select count(*) from Resultat where (nomEquipeA = ? and scoreEquipeA < scoreEquipeB) || (nomEquipeB = ? and scoreEquipeA > scoreEquipeB)");
 		stmtNbMNul = cx.getConnection()
 				.prepareStatement("select count(*) from Resultat where (nomEquipeA = ? || nomEquipeB = ?) and scoreEquipeA = scoreEquipeB");
-		stmtDispResultatsEquipe = cx.getConnection().prepareStatement("select * from Resultat where nomEquipe = ?");
+		stmtDispResultatsEquipe = cx.getConnection().prepareStatement("select * from Resultat where nomEquipeA = ? or nomEquipeB = ?");
 
 	}
 
@@ -167,17 +167,18 @@ public class TableResultats {
 	 */
 	public ArrayList<Resultat> lectureResultats(String nomEquipe) throws SQLException {
 		stmtDispResultatsEquipe.setString(1, nomEquipe);
+		stmtDispResultatsEquipe.setString(2, nomEquipe);
+	
 		ResultSet rset = stmtDispResultatsEquipe.executeQuery();
-
 		ArrayList<Resultat> listResultats = new ArrayList<Resultat>();
-
+	
 		while (rset.next()) {
 			Resultat tupleResultat = new Resultat();
 			tupleResultat.setNomEquipeA(rset.getString("nomEquipeA"));
 			tupleResultat.setNomEquipeB(rset.getString("nomEquipeB"));
 			tupleResultat.setScoreEquipeA(rset.getInt("scoreEquipeA"));
 			tupleResultat.setScoreEquipeB(rset.getInt("scoreEquipeB"));
-			rset.close();
+			//rset.close();
 			listResultats.add(tupleResultat);
 		}
 		rset.close();
