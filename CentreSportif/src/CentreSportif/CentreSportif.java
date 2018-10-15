@@ -103,7 +103,7 @@ public class CentreSportif
     	tableResultats = new TableResultats(cx);
         gestionLigue = new GestionLigue(tableLigues, tableEquipes, tableParticipants);
 		gestionEquipe = new GestionEquipe(tableEquipes,tableParticipants,tableLigues,tableResultats);
-        gestionParticipant = new GestionParticipant(tableParticipants);
+        gestionParticipant = new GestionParticipant(tableParticipants, tableEquipes);
         gestionResultat = new GestionResultat(tableResultats);
     }
 
@@ -148,33 +148,39 @@ public class CentreSportif
                 	String nomLigue = readString(tokenizer);
                 	gestionLigue.supprime(nomLigue);
                 }
-                else if(command.equals("ajouterEquipe"))
+                else if(command.equals("ajouterEquipe"))	//OK
                 {
                 	String nomLigue = readString(tokenizer);
                 	String nomEquipe = readString(tokenizer);
                 	String matriculeCap = readString(tokenizer);
-                	gestionParticipant.accepteParEquipe(nomEquipe, matriculeCap);
                 	gestionEquipe.ajouter(nomEquipe, matriculeCap, nomLigue);
+                	gestionParticipant.accepteParEquipe(nomEquipe, matriculeCap);
                 }
-                else if(command.equals("ajouterJoueur"))
+                else if(command.equals("changerCapitaine"))	//Ok si not null
+                {
+                	String nomEquipe = readString(tokenizer);
+                	String matriculeCap = readString(tokenizer);
+                	gestionEquipe.changerCapitaine(nomEquipe, matriculeCap);
+                }
+                else if(command.equals("ajouterJoueur"))	//OK
                 {
                 	String nomEquipe = readString(tokenizer);
                 	String matricule = readString(tokenizer);
                 	gestionParticipant.ajouteParEquipe(nomEquipe, matricule);
                 }
-                else if(command.equals("accepterJoueur"))
+                else if(command.equals("accepterJoueur"))	//OK
                 {
                 	String nomEquipe = readString(tokenizer);
                 	String matricule = readString(tokenizer);
                 	gestionParticipant.accepteParEquipe(nomEquipe, matricule);
                 }
-                else if(command.equals("refuserJoueur"))
+                else if(command.equals("refuserJoueur"))	//OK
                 {
                 	String nomEquipe = readString(tokenizer);
                 	String matricule = readString(tokenizer);
                 	gestionParticipant.refuseParEquipe(nomEquipe, matricule);
                 }
-                else if(command.equals("supprimerJoueur"))
+                else if(command.equals("supprimerJoueur"))	//OK
                 {
                 	String nomEquipe = readString(tokenizer);
                 	String matricule = readString(tokenizer);
@@ -194,13 +200,19 @@ public class CentreSportif
                 	String nomLigue = readString(tokenizer);
                 	gestionEquipe.lectureEquipesLigue(nomLigue);
                 }
-                else if(command.equals("ajouterResultat"))	
+                else if(command.equals("ajouterResultat"))	//OK
                 {
                 	String nomEquipeA = readString(tokenizer);
                 	int scoreEquipeA = readInt(tokenizer);
                 	String nomEquipeB = readString(tokenizer);
                 	int scoreEquipeB = readInt(tokenizer);
                 	gestionResultat.InscrireResulat(nomEquipeA, nomEquipeB, scoreEquipeA, scoreEquipeB);
+                }
+                else if(command.equals("supprimerResultat"))	//OK
+                {
+                	String nomEquipeA = readString(tokenizer);
+                	String nomEquipeB = readString(tokenizer);
+                	gestionResultat.supprimerResultat(nomEquipeA, nomEquipeB);
                 }
                 else
                 {

@@ -10,21 +10,20 @@ public class GestionParticipant {
 
 	private TableParticipants participant;
 	private TableEquipes equipe;
-	// private TableResultats resultat;
 	private Connexion cx;
 
 	/**
 	 * Creation d'une instance
 	 */
-	public GestionParticipant(TableParticipants participant/* , TableResultats resultat */) throws IFT287Exception {
+	public GestionParticipant(TableParticipants participant , TableEquipes equipe) throws IFT287Exception {
 		this.cx = participant.getConnexion();
-		/*
-		 * if (participant.getConnexion() != resultat.getConnexion()) throw new
-		 * IFT287Exception("Les instances de participant et de resultat n'utilisent pas la même connexion au serveur"
-		 * );
-		 */
+
+		if (participant.getConnexion() != equipe.getConnexion())
+			throw new IFT287Exception(
+					"Les instances de participant et de equipe n'utilisent pas la même connexion au serveur");
+
 		this.participant = participant;
-		// this.resultat = resultat;
+		this.equipe = equipe;
 	}
 
 	/**
@@ -97,7 +96,7 @@ public class GestionParticipant {
 		try {
 			// Vérifie si le participant existe
 			if (!participant.existe(matricule))
-				throw new IFT287Exception("Particpant n'existe pas : " + matricule);
+				throw new IFT287Exception("Participant "+matricule+" n'existe pas");
 			if (!equipe.existe(nomEquipe))
 				throw new IFT287Exception("L'equipe selectionnée " + nomEquipe + " est introuvable");
 			if (participant.getParticipant(matricule).getStatut().equals("EN ATTENTE")
@@ -111,17 +110,11 @@ public class GestionParticipant {
 			if (participant.getParticipant(matricule).getStatut().equals("ACCEPTE")
 					&& participant.getParticipant(matricule).getNomEquipe().equals(nomEquipe))
 				throw new IFT287Exception("Le Participant selectionné est déjà dans cette equipe");
+			if (participant.getParticipant(matricule).getStatut().equals("EN ATTENTE")
+					&& participant.getParticipant(matricule).getNomEquipe().equals(nomEquipe))
+				throw new IFT287Exception("Le Participant postule déjà pour cette equipe");
 
 			participant.ajouteParEquipe(nomEquipe, matricule);
-
-			// Ajout à la liste de l'équipe
-
-			/*
-			 * Participant joueur = participant.getParticipant(matricule);
-			 * ArrayList<Participant> listJoueurs =
-			 * equipe.getEquipe(nomEquipe).getListParticipants(); listJoueurs.add(joueur);
-			 * equipe.modifierJoueurEquipe(nomEquipe, listJoueurs);
-			 */
 
 			// Commit
 			cx.commit();
@@ -139,7 +132,7 @@ public class GestionParticipant {
 		try {
 			// Vérifie si le participant existe
 			if (!participant.existe(matricule))
-				throw new IFT287Exception("Particpant n'existe pas : " + matricule);
+				throw new IFT287Exception("Particpant"+matricule+ "n'existe pas");
 			if (!equipe.existe(nomEquipe))
 				throw new IFT287Exception("L'equipe selectionnée " + nomEquipe + " est introuvable");
 			if (participant.getParticipant(matricule).getStatut().equals("EN ATTENTE")
@@ -236,18 +229,13 @@ public class GestionParticipant {
 			if (participant.getParticipant(matricule).getStatut().equals("ACCEPTE")
 					&& !participant.getParticipant(matricule).getNomEquipe().equals(nomEquipe))
 				throw new IFT287Exception("Le Participant selectionné est dans une autre equipe");
-
+			
+			Equipe tupleEquipe = equipe.getEquipe(nomEquipe);
+			if(tupleEquipe.getMatriculeCap().equals(matricule)) {
+				equipe.changerCapitaine(nomEquipe, null);
+			}
 			participant.supprimeParEquipe(nomEquipe, matricule);
 			// Refuse à la liste de l'équipe
-
-			/*
-			 * Participant joueur = participant.getParticipant(matricule);
-			 * ArrayList<Participant> listJoueurs =
-			 * equipe.getEquipe(nomEquipe).getListParticipants();
-			 * listJoueurs.remove(joueur);
-			 * 
-			 * equipe.modifierJoueurEquipe(nomEquipe, listJoueurs);
-			 */
 
 			// Commit
 			cx.commit();
@@ -306,12 +294,11 @@ public class GestionParticipant {
 			throw e;
 		}
 	}
-	
+
 	/**
 	 * Lecture des participants d'une équipe
 	 */
-	public void affichageParticipants(String nomEquipe)
-			throws SQLException, IFT287Exception, Exception {
+	public void affichageParticipants(String nomEquipe) throws SQLException, IFT287Exception, Exception {
 		// Validation
 		try {
 			Equipe tupleEquipe = equipe.getEquipe(nomEquipe);
@@ -322,7 +309,6 @@ public class GestionParticipant {
 
 			ArrayList<Participant> listeParticipant = participant.lectureParticipants(nomEquipe);
 
-			
 			// Commit
 			cx.commit();
 		} catch (Exception e) {

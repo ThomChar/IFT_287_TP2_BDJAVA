@@ -20,13 +20,16 @@ public class GestionEquipe {
 	public GestionEquipe(TableEquipes equipe, TableParticipants participant, TableLigues ligue, TableResultats resultat)
 			throws IFT287Exception {
 		this.cx = equipe.getConnexion();
-		if (equipe.getConnexion() == ligue.getConnexion() && participant.getConnexion() == equipe.getConnexion() && equipe.getConnexion() == resultat.getConnexion() && ligue.getConnexion() == resultat.getConnexion()) {
+		if (equipe.getConnexion() == ligue.getConnexion() && participant.getConnexion() == equipe.getConnexion()
+				&& equipe.getConnexion() == resultat.getConnexion()
+				&& ligue.getConnexion() == resultat.getConnexion()) {
 			this.equipe = equipe;
 			this.participant = participant;
 			this.ligue = ligue;
 			this.resultat = resultat;
-		}else{
-			throw new IFT287Exception("Les instances de participant et de resultat n'utilisent pas la même connexion au serveur");
+		} else {
+			throw new IFT287Exception(
+					"Les instances de participant et de resultat n'utilisent pas la même connexion au serveur");
 		}
 	}
 
@@ -38,9 +41,12 @@ public class GestionEquipe {
 			throws SQLException, IFT287Exception, Exception {
 		try {
 			// Vérifie si l equipe existe déjà
-			if (equipe.existe(nomEquipe))
-				throw new IFT287Exception("Equipe " + nomEquipe + " existe déjà : ");
-			if (ligue.existe(nomLigue))
+		
+			if (equipe.testDejaCapitaine(matriculeCap))
+				throw new IFT287Exception("Ce participant est deja capitaine : ");
+			if (!ligue.existe(nomLigue))
+				throw new IFT287Exception("Ligue " + nomLigue + " n'existe pas : ");
+			if (!participant.existe(matriculeCap))
 				throw new IFT287Exception("Ligue " + nomLigue + " n'existe pas : ");
 
 			// Ajout du participant dans la table des participant
@@ -82,6 +88,37 @@ public class GestionEquipe {
 	}
 
 	/**
+	 * Change le capitaine de l'equipe d'une equipe.
+	 * 
+	 * @throws SQLException
+	 */
+	public void changerCapitaine(String nomEquipe, String matriculeCap)throws SQLException, IFT287Exception, Exception {
+		try {
+			// Vérifie si l equipe existe déjà
+			if (!equipe.existe(nomEquipe))
+				throw new IFT287Exception("Equipe " + nomEquipe + " n'existe pas : ");
+			/*if (equipe.getEquipe(nomEquipe).getMatriculeCap().equals(matriculeCap))
+				throw new IFT287Exception("Ce Participant est déjà le capitaine de l'equipe");*/
+			if (!participant.existe(matriculeCap))
+				throw new IFT287Exception("Participant " + matriculeCap + " n'existe pas : ");
+			/*Participant tupleParticpant = participant.getParticipant(matriculeCap);
+			System.out.println(tupleParticpant.getNomEquipe().toString());*/
+			if (!(participant.getParticipant(matriculeCap).getNomEquipe().equals(nomEquipe) && participant.getParticipant(matriculeCap).getStatut().equals("ACCEPTE")))
+				throw new IFT287Exception("Ce Particpant " + matriculeCap + " ne peut pas devenir captaine de " +nomEquipe+" car il n'est pas dans l'equipe");
+			if ((participant.getParticipant(matriculeCap).getNomEquipe().equals(nomEquipe) && participant.getParticipant(matriculeCap).getStatut().equals("ACCEPTE")))
+				throw new IFT287Exception("Ce Particpant " + matriculeCap + " ne peut pas devenir captaine de " +nomEquipe+" car il n'est pas dans l'equipe");
+
+			equipe.changerCapitaine(nomEquipe, matriculeCap);
+
+			// Commit
+			cx.commit();
+		} catch (Exception e) {
+			cx.rollback();
+			throw e;
+		}
+	}
+
+	/**
 	 * affichage d'une equipe
 	 */
 	public void affichageEquipe(String nomEquipe) throws SQLException, IFT287Exception, Exception {
@@ -94,7 +131,7 @@ public class GestionEquipe {
 			tupleEquipe.setListParticipants(participant.lectureParticipants(nomEquipe));
 			tupleEquipe.setListResultats(resultat.lectureResultats(nomEquipe));
 			System.out.println(tupleEquipe.toString());
-			
+
 			// Commit
 			cx.commit();
 		} catch (Exception e) {
@@ -130,11 +167,12 @@ public class GestionEquipe {
 	public void affichageEquipes() throws SQLException, IFT287Exception, Exception {
 		try {
 			System.out.println("Equipe [");
-			for(Equipe eq : equipe.lectureEquipes()) {
-				System.out.println("nomEquipe=" + eq.getNomEquipe() + ", matriculeCap="+ eq.getMatriculeCap() + ", nomLigue=" + eq.getNomLigue());
+			for (Equipe eq : equipe.lectureEquipes()) {
+				System.out.println("nomEquipe=" + eq.getNomEquipe() + ", matriculeCap=" + eq.getMatriculeCap()
+						+ ", nomLigue=" + eq.getNomLigue());
 			}
 			System.out.println("]");
-			//System.out.println(equipe.lectureEquipes());
+			// System.out.println(equipe.lectureEquipes());
 			// Commit
 			cx.commit();
 		} catch (Exception e) {

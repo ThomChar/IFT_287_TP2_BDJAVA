@@ -33,7 +33,7 @@ public class TableResultats {
 		stmtUpdate = cx.getConnection().prepareStatement(
 				"update Resultat set scoreEquipeA = ?, scoreEquipeB = ? where nomEquipeA = ? and nomEquipeA = ?");
 		stmtDelete = cx.getConnection()
-				.prepareStatement("delete from Resultat where nomEquipeA = ? and nomEquipeB = ?");
+				.prepareStatement("delete from Resultat where (nomEquipeA = ? and nomEquipeB = ?) or (nomEquipeB = ? and nomEquipeA = ?)");
 		stmtDispResultat = cx.getConnection()
 				.prepareStatement("select nomEquipeA, nomEquipeB, scoreEquipeA, scoreEquipeB from Resultat");
 		stmtNbMGagne = cx.getConnection()
@@ -70,14 +70,14 @@ public class TableResultats {
 	 */
 	public Resultat getResultat(String nomEquipeA, String nomEquipeB) throws SQLException {
 		stmtExiste.setString(1, nomEquipeA);
-		stmtExiste.setString(1, nomEquipeB);
+		stmtExiste.setString(2, nomEquipeB);
 		ResultSet rset = stmtExiste.executeQuery();
 		if (rset.next()) {
 			Resultat tupleResultat = new Resultat();
 			tupleResultat.setNomEquipeA(nomEquipeA);
 			tupleResultat.setNomEquipeB(nomEquipeB);
-			tupleResultat.setScoreEquipeA(rset.getInt(3));
-			tupleResultat.setScoreEquipeB(rset.getInt(4));
+			/*tupleResultat.setScoreEquipeA(rset.getInt(1));
+			tupleResultat.setScoreEquipeB(rset.getInt(2));*/
 			rset.close();
 			return tupleResultat;
 		} else
@@ -116,7 +116,9 @@ public class TableResultats {
 	public int supprimer(String nomEquipeA, String nomEquipeB) throws SQLException {
 		stmtDelete.setString(1, nomEquipeA);
 		stmtDelete.setString(2, nomEquipeB);
-		return stmtUpdate.executeUpdate();
+		stmtDelete.setString(3, nomEquipeA);
+		stmtDelete.setString(4, nomEquipeB);
+		return stmtDelete.executeUpdate();
 	}
 
 	/**

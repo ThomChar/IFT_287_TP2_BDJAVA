@@ -28,9 +28,12 @@ public class GestionResultat {
 		try {
 			// Verifier si resultat equipeA contre EquipeB existe
 			Resultat tupleResultat = resultat.getResultat(nomEquipeA,nomEquipeB);
-			if (tupleResultat == null)
-				throw new IFT287Exception("Resultat inexistant: " + nomEquipeA + "contre" + nomEquipeB );
-
+			//si pas de match retour possible
+			Resultat tupleResultat2 = resultat.getResultat(nomEquipeB,nomEquipeA);
+			if (tupleResultat != null)
+				throw new IFT287Exception("Resultat deja existant: " + nomEquipeA + " contre " + nomEquipeB );
+			if (tupleResultat2 != null)
+				throw new IFT287Exception("Resultat deja existant: " + nomEquipeB + " contre " + nomEquipeA );
 
 			// Creation du resultat
 			resultat.ajouter(nomEquipeA, nomEquipeB, scoreEquipeA, scoreEquipeB);

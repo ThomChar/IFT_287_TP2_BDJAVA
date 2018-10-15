@@ -16,8 +16,8 @@ import CentreSportif.IFT287Exception;
 public class TableEquipes {
 
 	private PreparedStatement stmtExiste;
+	private PreparedStatement stmtExisteCapitaine;
 	private PreparedStatement stmtInsert;
-	private PreparedStatement stmtUpdateCompoEquipe;
 	private PreparedStatement stmtUpdate;
 	private PreparedStatement stmtDelete;
 	private PreparedStatement stmtDispEquipes;
@@ -35,10 +35,12 @@ public class TableEquipes {
 		this.cx = cx;
 		stmtExiste = cx.getConnection()
 				.prepareStatement("select nomEquipe, matriculeCapitaine, nomLigue from Equipe where nomEquipe = ?");
+		stmtExisteCapitaine = cx.getConnection()
+				.prepareStatement("select nomEquipe, matriculeCapitaine, nomLigue from Equipe where matriculeCapitaine = ?");
 		stmtInsert = cx.getConnection()
 				.prepareStatement("insert into Equipe (nomEquipe, matriculeCapitaine, nomLigue) " + "values (?,?,?)");
 		stmtUpdate = cx.getConnection()
-				.prepareStatement("update Equipe set nomEquipe = ?,matriculeCapitaine = ? where nomEquipe = ?");
+				.prepareStatement("update Equipe set matriculeCapitaine = ? where nomEquipe = ?");
 		stmtDelete = cx.getConnection().prepareStatement("delete from Equipe where nomEquipe = ?");
 		stmtDispEquipes = cx.getConnection().prepareStatement("select nomEquipe, matriculeCapitaine, nomLigue from Equipe");
 		stmtDispEquipesLigue = cx.getConnection().prepareStatement("select * from Equipe where nomLigue = ?");
@@ -63,6 +65,17 @@ public class TableEquipes {
 		boolean equipeExiste = rset.next();
 		rset.close();
 		return equipeExiste;
+	}
+	
+	/**
+	 * Vérifie si un participant est deja capitain d'une equipe.
+	 */
+	public boolean testDejaCapitaine(String matricule) throws SQLException {
+		stmtExisteCapitaine.setString(1, matricule);
+		ResultSet rset = stmtExisteCapitaine.executeQuery();
+		boolean capiatineExiste = rset.next();
+		rset.close();
+		return capiatineExiste;
 	}
 
 	/**
@@ -109,6 +122,16 @@ public class TableEquipes {
 	public int supprimer(String nomEquipe) throws SQLException {
 		stmtDelete.setString(1, nomEquipe);
 		return stmtDelete.executeUpdate();
+	}
+	
+	/**
+	 * Change le capitaine de l'equipe d'une equipe.
+	 * @throws SQLException 
+	 */
+	public void changerCapitaine(String nomEquipe, String matriculeCap) throws SQLException {
+		stmtUpdate.setString(1, matriculeCap);
+		stmtUpdate.setString(2, nomEquipe);
+		stmtUpdate.executeUpdate();
 	}
 	
 	/**
@@ -163,4 +186,5 @@ public class TableEquipes {
 		rset.close();
 		return listEquipes;
 	}
+
 }
