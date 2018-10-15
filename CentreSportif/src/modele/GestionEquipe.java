@@ -9,14 +9,18 @@ import CentreSportif.IFT287Exception;
 public class GestionEquipe {
 
 	private TableEquipes equipe;
+	private TableLigues ligue;
+	private TableParticipants participant;
 	private Connexion cx;
 
 	/**
 	 * Creation d'une instance
 	 */
-	public GestionEquipe(TableEquipes equipe) throws IFT287Exception {
+	public GestionEquipe(TableEquipes equipe, TableLigues ligue, TableParticipants particpant) throws IFT287Exception {
 		this.cx = equipe.getConnexion();
+		this.ligue = ligue;
 		this.equipe = equipe;
+		this.participant = participant;
 	}
 
 	/**

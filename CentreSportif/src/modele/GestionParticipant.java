@@ -37,10 +37,8 @@ public class GestionParticipant {
 			// Vérifie si le participant existe déjà
 			if (participant.existe(matricule))
 				throw new IFT287Exception("Particpant existe déjà : " + matricule);
-
 			// Ajout du participant dans la table des participant
 			participant.ajouter(matricule, prenom, nom, motDePasse, nomEquipe, statut);
-
 			// Commit
 			cx.commit();
 		} catch (Exception e) {

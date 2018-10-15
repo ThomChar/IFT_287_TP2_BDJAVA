@@ -67,7 +67,7 @@ public class TableLigues {
 		if (rset.next()) {
 			Ligue tupleLigue = new Ligue();
 			tupleLigue.setNomLigue(nomLigue);
-			tupleLigue.setNbJoueurMaxParEquipe(rset.getInt(1));
+			tupleLigue.setNbJoueurMaxParEquipe(rset.getInt("nbJoueursMaxParEquipe"));
 			// A regarder pour recuperer arraylist
 
 			/*tupleLigue.setListEquipes(
@@ -159,5 +159,4 @@ public class TableLigues {
 		stmtUpdateListEquipes.setString(1, nomLigue);
 		stmtUpdateListEquipes.executeUpdate();
 	}
-
 }

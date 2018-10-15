@@ -61,7 +61,11 @@ public class Ligue {
 		return "Ligue [nomLigue=" + nomLigue + ", listEquipes=" + listEquipes + ", nbJoueurMaxParEquipe="
 				+ nbJoueurMaxParEquipe + "]";
 	}
-
+	
+	/**
+	 * Véririe si 
+	 * @return
+	 */
 	public boolean isActive() {
 		boolean testIsActive = true;
 		if(this.getListEquipes().size() == 0) {

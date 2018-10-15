@@ -23,6 +23,8 @@ public class TableParticipants {
     private PreparedStatement stmtDelete;
     private PreparedStatement stmtDispParticipant;
     private PreparedStatement stmtDispParticipants;
+    private PreparedStatement stmtNombreMembresEquipe;
+    private PreparedStatement stmtNombreMembresLigue;
     private Connexion cx;
 
     /**
@@ -40,7 +42,7 @@ public class TableParticipants {
                 "select matricule, prenom, nom, motDePasse, nomEquipe, statut from Participant where prenom = ?");
         stmtInsert = cx.getConnection()
                 .prepareStatement("insert into Participant (matricule, prenom, nom, motDePasse, nomEquipe, statut) "
-                        + "values (?,?,?,?,null,null)");
+                        + "values (?,?,?,?,?,?)");
         stmtUpdate = cx.getConnection()
                 .prepareStatement("update Participant set nomEquipe = ?, statut = ? " + "where matricule = ?");
         stmtUpdateNomPrenom = cx.getConnection().prepareStatement("update Participant set nom = ?, prenom = ? " + "where matricule = ?");
@@ -48,6 +50,8 @@ public class TableParticipants {
         stmtDelete = cx.getConnection().prepareStatement("delete from Participant where matricule = ?");
         stmtDispParticipant = cx.getConnection().prepareStatement("select matricule, prenom, nom, motDePasse, nomEquipe, statut from Participant");
         stmtDispParticipants = cx.getConnection().prepareStatement("select * from Participant where nomEquipe = ?");
+        stmtNombreMembresEquipe = cx.getConnection().prepareStatement("select COUNT(*) AS nb FROM Participant WHERE nomEquipe = ?");
+        stmtNombreMembresLigue = cx.getConnection().prepareStatement("SELECT COUNT(*) AS nb FROM participant NATURAL JOIN equipe NATURAL JOIN ligue WHERE nomLigue = ? AND statut = 'accepte'");
     }
 
     /**
@@ -241,5 +245,30 @@ public class TableParticipants {
 		}
 		rset.close();
 		return listeParticipants;		
+	}
+	
+	/**
+	 * Compter nombres de particpants dans une équipe
+	 */
+	public int nombreMembresEquipe(String nomEquipe) throws SQLException
+	{
+		stmtDispParticipants.setString(1, nomEquipe);
+		ResultSet rset = stmtNombreMembresEquipe.executeQuery();
+		int nb = rset.getInt("nb");
+		rset.close();
+		return nb;
+	}
+	
+	/**
+	 * Compter nombres de particpants dans une ligue
+	 */
+	public int nombreMembresLigue(String nomLigue) throws SQLException
+	{
+		stmtNombreMembresLigue.setString(1, nomLigue);
+		ResultSet rset = stmtNombreMembresLigue.executeQuery();
+		rset.next();
+		int nb = rset.getInt("nb");
+		rset.close();
+		return nb;
 	}
  }
