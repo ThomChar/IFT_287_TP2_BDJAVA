@@ -10,17 +10,21 @@ public class GestionLigue {
 
   	//private TableParticipants participant;
   	private TableLigues ligue;
+  	private TableEquipes equipe;
+  	private TableParticipants participant;
     private Connexion cx;
 
     /**
      * Creation d'une instance
      */
-    public GestionLigue(TableLigues ligue) throws IFT287Exception
+    public GestionLigue(TableLigues ligue, TableEquipes equipe, TableParticipants participant) throws IFT287Exception
     {
         this.cx = ligue.getConnexion();
         /*if (participant.getConnexion() != resultat.getConnexion())
             throw new IFT287Exception("Les instances de participant et de resultat n'utilisent pas la même connexion au serveur");*/
         this.ligue = ligue;
+        this.equipe = equipe;
+        this.participant = participant;
     }
 
     /**
@@ -113,12 +117,14 @@ public class GestionLigue {
             Ligue tupleLigue = ligue.getLigue(nomLigue);
             if (tupleLigue == null)
                 throw new IFT287Exception("Ligue inexistant: " + nomLigue);
-            if (tupleLigue.isActive())
-                throw new IFT287Exception("Ligue " + nomLigue + "a encore des equipes et participants actifs");
-
+            if (participant.nombreMembresLigue(nomLigue) > 0)
+                throw new IFT287Exception("Ligue " + nomLigue + "a encore des participants actifs");
+            
+            // Suppression des equipes de la ligue.
+            int nbEquipe = equipe.supprimerEquipesLigue(nomLigue);
             // Suppression de la ligue.
-            int nb = ligue.supprimer(nomLigue);
-            if (nb == 0)
+            int nbLique = ligue.supprimer(nomLigue);
+            if (nbLique == 0)
                 throw new IFT287Exception("Ligue " + nomLigue + " inexistante");
             
             // Commit

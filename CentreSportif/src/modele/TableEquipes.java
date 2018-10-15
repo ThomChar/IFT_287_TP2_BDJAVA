@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import CentreSportif.Connexion;
+import CentreSportif.IFT287Exception;
 
 public class TableEquipes {
 
@@ -22,7 +23,12 @@ public class TableEquipes {
 	private PreparedStatement stmtDispEquipes;
 	private PreparedStatement stmtDispEquipesLigue;
 	private PreparedStatement stmtDispParticipants;
+<<<<<<< HEAD
 	private PreparedStatement stmtDispEquipesParLigue;
+=======
+	private PreparedStatement stmtNombreMembresEquipe;
+	private PreparedStatement stmtDeleteEquipesLigue;
+>>>>>>> remi
 	private Connexion cx;
 
 	/**
@@ -37,9 +43,16 @@ public class TableEquipes {
 		stmtUpdate = cx.getConnection()
 				.prepareStatement("update Equipe set nomEquipe = ?,matriculeCapitaine = ? where nomEquipe = ?");
 		stmtDelete = cx.getConnection().prepareStatement("delete from Equipe where nomEquipe = ?");
+<<<<<<< HEAD
 		stmtDispEquipes = cx.getConnection().prepareStatement("select nomEquipe, matriculeCapitaine, nomLigue from Equipe");
 		stmtDispEquipesLigue = cx.getConnection().prepareStatement("select * from Equipe where nomLigue = ?");
 		stmtDispEquipesParLigue = cx.getConnection().prepareStatement("select * from Equipe order by nomLigue");
+=======
+		stmtDeleteEquipesLigue = cx.getConnection().prepareStatement("delete from Equipe where nomLigue = ?");
+		stmtDispEquipes = cx.getConnection().prepareStatement("select nomEquipe, matriculeCap, nomLigue from Equipe");
+		stmtDispEquipesLigue = cx.getConnection().prepareStatement("select * from Equipe where nomLigue = ?");
+		stmtNombreMembresEquipe = cx.getConnection().prepareStatement("select COUNT(*) AS nb FROM Participant WHERE nomEquipe = ?");
+>>>>>>> remi
 	}
 
 	/**
@@ -105,6 +118,14 @@ public class TableEquipes {
 		stmtDelete.setString(1, nomEquipe);
 		return stmtDelete.executeUpdate();
 	}
+	
+	/**
+	 * Suppression des équipes d'une ligue.
+	 */
+	public int supprimerEquipesLigue(String nomLigue) throws SQLException {
+		stmtDeleteEquipesLigue.setString(1, nomLigue);
+		return stmtDeleteEquipesLigue.executeUpdate();
+	}
 
 	/**
 	 * lecture des equipes de l'équipe
@@ -150,5 +171,4 @@ public class TableEquipes {
 		rset.close();
 		return listEquipes;
 	}
-
 }

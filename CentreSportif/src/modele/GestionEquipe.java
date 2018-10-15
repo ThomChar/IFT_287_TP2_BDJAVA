@@ -11,12 +11,16 @@ public class GestionEquipe {
 	private TableEquipes equipe;
 	private TableLigues ligue;
 	private TableParticipants participant;
+<<<<<<< HEAD
 	private TableResultats resultat;
+=======
+>>>>>>> remi
 	private Connexion cx;
 
 	/**
 	 * Creation d'une instance
 	 */
+<<<<<<< HEAD
 	public GestionEquipe(TableEquipes equipe, TableParticipants participant, TableLigues ligue, TableResultats resultat)
 			throws IFT287Exception {
 		this.cx = equipe.getConnexion();
@@ -28,6 +32,13 @@ public class GestionEquipe {
 		}else{
 			throw new IFT287Exception("Les instances de participant et de resultat n'utilisent pas la même connexion au serveur");
 		}
+=======
+	public GestionEquipe(TableEquipes equipe, TableLigues ligue, TableParticipants particpant) throws IFT287Exception {
+		this.cx = equipe.getConnexion();
+		this.ligue = ligue;
+		this.equipe = equipe;
+		this.participant = participant;
+>>>>>>> remi
 	}
 
 	/**
