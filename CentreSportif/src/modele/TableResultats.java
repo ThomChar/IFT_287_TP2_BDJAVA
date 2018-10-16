@@ -37,11 +37,11 @@ public class TableResultats {
 		stmtDispResultat = cx.getConnection()
 				.prepareStatement("select nomEquipeA, nomEquipeB, scoreEquipeA, scoreEquipeB from Resultat");
 		stmtNbMGagne = cx.getConnection()
-				.prepareStatement("select count(*) from Resultat where (nomEquipeA = ? and scoreEquipeA > scoreEquipeB) || (nomEquipeB = ? and scoreEquipeA < scoreEquipeB)");
+				.prepareStatement("select count(*) AS nb from Resultat where (nomEquipeA = ? and scoreEquipeA > scoreEquipeB) or (nomEquipeB = ? and scoreEquipeA < scoreEquipeB)");
 		stmtNbMPerdu = cx.getConnection()
-				.prepareStatement("select count(*) from Resultat where (nomEquipeA = ? and scoreEquipeA < scoreEquipeB) || (nomEquipeB = ? and scoreEquipeA > scoreEquipeB)");
+				.prepareStatement("select count(*) AS nb from Resultat where (nomEquipeA = ? and scoreEquipeA < scoreEquipeB) or (nomEquipeB = ? and scoreEquipeA > scoreEquipeB)");
 		stmtNbMNul = cx.getConnection()
-				.prepareStatement("select count(*) from Resultat where (nomEquipeA = ? || nomEquipeB = ?) and scoreEquipeA = scoreEquipeB");
+				.prepareStatement("select count(*) AS nb from Resultat where (nomEquipeA = ? or nomEquipeB = ?) and scoreEquipeA = scoreEquipeB");
 		stmtDispResultatsEquipe = cx.getConnection().prepareStatement("select * from Resultat where nomEquipeA = ? or nomEquipeB = ?");
 
 	}
@@ -129,7 +129,11 @@ public class TableResultats {
 	public int ObtenirNbMGagne(String nomEquipe) throws SQLException {
 		stmtNbMGagne.setString(1, nomEquipe);
 		stmtNbMGagne.setString(2, nomEquipe);
-		return stmtNbMGagne.executeUpdate();
+		ResultSet rset = stmtNbMGagne.executeQuery();
+		rset.next();
+		int nb = rset.getInt("nb");
+		rset.close();
+		return nb;
 	}
 
 	/**
@@ -140,7 +144,11 @@ public class TableResultats {
 	public int ObtenirNbMPerdu(String nomEquipe) throws SQLException {
 		stmtNbMPerdu.setString(1, nomEquipe);
 		stmtNbMPerdu.setString(2, nomEquipe);
-		return stmtNbMPerdu.executeUpdate();
+		ResultSet rset = stmtNbMPerdu.executeQuery();
+		rset.next();
+		int nb = rset.getInt("nb");
+		rset.close();
+		return nb;
 	}
 
 	/**
@@ -151,7 +159,11 @@ public class TableResultats {
 	public int ObtenirNbMNul(String nomEquipe) throws SQLException {
 		stmtNbMNul.setString(1, nomEquipe);
 		stmtNbMNul.setString(2, nomEquipe);
-		return stmtNbMNul.executeUpdate();
+		ResultSet rset = stmtNbMNul.executeQuery();
+		rset.next();
+		int nb = rset.getInt("nb");
+		rset.close();
+		return nb;
 	}
 
 	/**

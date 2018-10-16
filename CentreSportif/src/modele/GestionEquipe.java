@@ -126,7 +126,7 @@ public class GestionEquipe {
 		try {
 			Equipe tupleEquipe = equipe.getEquipe(nomEquipe);
 			if (tupleEquipe == null)
-				throw new IFT287Exception("Equipe inexistant: " + nomEquipe);
+				throw new IFT287Exception("Equipe inexistante: " + nomEquipe);
 
 			tupleEquipe.setListParticipants(participant.lectureParticipants(nomEquipe));
 			tupleEquipe.setListResultats(resultat.lectureResultats(nomEquipe));
@@ -150,7 +150,7 @@ public class GestionEquipe {
 			if (tupleLigue == null)
 				throw new IFT287Exception("Ligue inexistant: " + nomLigue);
 
-			ArrayList<Equipe> listEquipes = equipe.lectureEquipes(nomLigue);
+			ArrayList<Equipe> listEquipes = equipe.lectureEquipesLigue(nomLigue);
 
 			// Commit
 			cx.commit();
@@ -174,6 +174,32 @@ public class GestionEquipe {
 			System.out.println("]");
 			// System.out.println(equipe.lectureEquipes());
 			// Commit
+			cx.commit();
+		} catch (Exception e) {
+			cx.rollback();
+			throw e;
+		}
+	}
+	
+	/**
+	 * affichage de l'ensemble des equipes d'une ligue ainsi que le nombre de matchs gagnés, perdus et nulls.
+	 */
+	public void afficherEquipesLigue(String nomLigue) throws SQLException, IFT287Exception, Exception {
+		try {
+			// Validation
+			Ligue tupleLigue = ligue.getLigue(nomLigue);
+			if (tupleLigue == null)
+				throw new IFT287Exception("Ligue inexistante: " + nomLigue);
+			
+			// affichage
+			System.out.println("\nLigue " + nomLigue + " :");
+			for (Equipe eq : equipe.lectureEquipesLigue(nomLigue)) {
+				System.out.println("nomEquipe=" + eq.getNomEquipe() + ", matriculeCap=" + eq.getMatriculeCap()
+						+ ", nombreDeMatchsGagnés=" + resultat.ObtenirNbMGagne(eq.getNomEquipe())
+						+ ", nombreDeMatchsPerdus=" + resultat.ObtenirNbMPerdu(eq.getNomEquipe())
+						+ ", nombreDeMatchsNulls=" + resultat.ObtenirNbMNul(eq.getNomEquipe())
+						);
+			}
 			cx.commit();
 		} catch (Exception e) {
 			cx.rollback();

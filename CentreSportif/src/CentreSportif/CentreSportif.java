@@ -195,10 +195,10 @@ public class CentreSportif
                 	String nomEquipe = readString(tokenizer);
                 	gestionEquipe.affichageEquipe(nomEquipe);
                 }
-                else if(command.equals("afficherLigue"))
+                else if(command.equals("afficherLigue")) // OK
                 {
                 	String nomLigue = readString(tokenizer);
-                	gestionEquipe.lectureEquipesLigue(nomLigue);
+                	gestionEquipe.afficherEquipesLigue(nomLigue);
                 }
                 else if(command.equals("ajouterResultat"))	//OK
                 {

@@ -143,11 +143,11 @@ public class TableEquipes {
 	}
 
 	/**
-	 * lecture des equipes de l'équipe
+	 * lecture des equipes d'une ligue
 	 * 
 	 * @throws SQLException
 	 */
-	public ArrayList<Equipe> lectureEquipes(String nomLigue) throws SQLException {
+	public ArrayList<Equipe> lectureEquipesLigue(String nomLigue) throws SQLException {
 		stmtDispEquipesLigue.setString(1, nomLigue);
 		ResultSet rset = stmtDispEquipesLigue.executeQuery();
 
@@ -156,9 +156,8 @@ public class TableEquipes {
 		while (rset.next()) {
 			Equipe tupleEquipe = new Equipe();
 			tupleEquipe.setNomEquipe(rset.getString("nomEquipe"));
-			tupleEquipe.setMatriculeCap("matriculeCap");
+			tupleEquipe.setMatriculeCap(rset.getString("matriculeCapitaine"));
 			tupleEquipe.setNomLigue(rset.getString("nomLigue"));
-			rset.close();
 			listEquipes.add(tupleEquipe);
 		}
 		rset.close();
@@ -166,7 +165,7 @@ public class TableEquipes {
 	}
 	
 	/**
-	 * lecture des equipes de l'équipe
+	 * lecture des equipes de la table
 	 * 
 	 * @throws SQLException
 	 */
@@ -178,7 +177,7 @@ public class TableEquipes {
 		while (rset.next()) {
 			Equipe tupleEquipe = new Equipe();
 			tupleEquipe.setNomEquipe(rset.getString("nomEquipe"));
-			tupleEquipe.setMatriculeCap("matriculeCap");
+			tupleEquipe.setMatriculeCap(rset.getString("matriculeCapitaine"));
 			tupleEquipe.setNomLigue(rset.getString("nomLigue"));
 			//rset.close();
 			listEquipes.add(tupleEquipe);

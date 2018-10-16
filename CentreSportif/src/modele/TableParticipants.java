@@ -253,6 +253,7 @@ public class TableParticipants {
 	{
 		stmtDispParticipants.setString(1, nomEquipe);
 		ResultSet rset = stmtNombreMembresEquipe.executeQuery();
+		rset.next();
 		int nb = rset.getInt("nb");
 		rset.close();
 		return nb;
