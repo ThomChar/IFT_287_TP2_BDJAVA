@@ -39,7 +39,6 @@ public class Participant {
 	// Getters & Setters
 
 	public Participant() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getMatricule() {

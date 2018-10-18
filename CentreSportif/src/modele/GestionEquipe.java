@@ -34,8 +34,9 @@ public class GestionEquipe {
 	}
 
 	/**
-	 * Ajout d'une nouvelle equipe dans la base de données. S'il existe déjà , une
+	 * Ajout d'une nouvelle equipe dans la base de données. Si elle existe déjà , une
 	 * exception est levée.
+	 * @throws SQLException, IFT287Exception, Exception
 	 */
 	public void ajouter(String nomEquipe, String matriculeCap, String nomLigue)
 			throws SQLException, IFT287Exception, Exception {
@@ -49,11 +50,9 @@ public class GestionEquipe {
 			if (!participant.existe(matriculeCap))
 				throw new IFT287Exception("Ligue " + nomLigue + " n'existe pas : ");
 
-			// Ajout du participant dans la table des participant
+			// Ajout de l equipe dans la table des equipes
 			equipe.creer(nomEquipe, matriculeCap, nomLigue);
-			// Equipe newEquipe = equipe.getEquipe(nomEquipe);
-			// ligue.ajouter(newEquipe);
-
+			
 			// Commit
 			cx.commit();
 		} catch (Exception e) {
@@ -64,6 +63,8 @@ public class GestionEquipe {
 
 	/**
 	 * Supprime Equipe de la base de données.
+	 * 
+	 *  @throws SQLException, IFT287Exception, Exception
 	 */
 	public void supprime(String nomEquipe) throws SQLException, IFT287Exception, Exception {
 		try {
@@ -88,21 +89,17 @@ public class GestionEquipe {
 	}
 
 	/**
-	 * Change le capitaine de l'equipe d'une equipe.
+	 * Change le capitaine de l'equipe.
 	 * 
-	 * @throws SQLException
+	 * @throws SQLException, IFT287Exception, Exception
 	 */
 	public void changerCapitaine(String nomEquipe, String matriculeCap)throws SQLException, IFT287Exception, Exception {
 		try {
 			// Vérifie si l equipe existe déjà
 			if (!equipe.existe(nomEquipe))
 				throw new IFT287Exception("Equipe " + nomEquipe + " n'existe pas : ");
-			/*if (equipe.getEquipe(nomEquipe).getMatriculeCap().equals(matriculeCap))
-				throw new IFT287Exception("Ce Participant est déjà le capitaine de l'equipe");*/
 			if (!participant.existe(matriculeCap))
 				throw new IFT287Exception("Participant " + matriculeCap + " n'existe pas : ");
-			/*Participant tupleParticpant = participant.getParticipant(matriculeCap);
-			System.out.println(tupleParticpant.getNomEquipe().toString());*/
 			if (!(participant.getParticipant(matriculeCap).getNomEquipe().equals(nomEquipe) && participant.getParticipant(matriculeCap).getStatut().equals("ACCEPTE")))
 				throw new IFT287Exception("Ce Particpant " + matriculeCap + " ne peut pas devenir captaine de " +nomEquipe+" car il n'est pas dans l'equipe");
 			if ((participant.getParticipant(matriculeCap).getNomEquipe().equals(nomEquipe) && participant.getParticipant(matriculeCap).getStatut().equals("ACCEPTE")))
@@ -119,7 +116,9 @@ public class GestionEquipe {
 	}
 
 	/**
-	 * affichage d'une equipe
+	 * Affichage d'une equipe, de ses participants et de ses resultats
+	 * 
+	 *  @throws SQLException, IFT287Exception, Exception
 	 */
 	public void affichageEquipe(String nomEquipe) throws SQLException, IFT287Exception, Exception {
 		// Validation
@@ -142,6 +141,8 @@ public class GestionEquipe {
 
 	/**
 	 * Lecture des equipes d'une ligue
+	 * 
+	 * @throws SQLException, IFT287Exception, Exception
 	 */
 	public ArrayList<Equipe> lectureEquipesLigue(String nomLigue) throws SQLException, IFT287Exception, Exception {
 		// Validation
@@ -162,17 +163,20 @@ public class GestionEquipe {
 	}
 
 	/**
-	 * affichage de l'ensemble des equipes de la table.
+	 * Affichage de l'ensemble des equipes de la table.
+	 * 
+	 * @throws SQLException, IFT287Exception, Exception
 	 */
 	public void affichageEquipes() throws SQLException, IFT287Exception, Exception {
 		try {
+			
 			System.out.println("Equipe [");
 			for (Equipe eq : equipe.lectureEquipes()) {
 				System.out.println("nomEquipe=" + eq.getNomEquipe() + ", matriculeCap=" + eq.getMatriculeCap()
 						+ ", nomLigue=" + eq.getNomLigue());
 			}
 			System.out.println("]");
-			// System.out.println(equipe.lectureEquipes());
+			
 			// Commit
 			cx.commit();
 		} catch (Exception e) {
@@ -182,7 +186,9 @@ public class GestionEquipe {
 	}
 	
 	/**
-	 * affichage de l'ensemble des equipes d'une ligue ainsi que le nombre de matchs gagnés, perdus et nulls.
+	 * Affichage de l'ensemble des equipes d'une ligue ainsi que le nombre de matchs gagnés, perdus et nulls.
+	 * 
+	 * @throws SQLException, IFT287Exception, Exception
 	 */
 	public void afficherEquipesLigue(String nomLigue) throws SQLException, IFT287Exception, Exception {
 		try {
@@ -191,7 +197,7 @@ public class GestionEquipe {
 			if (tupleLigue == null)
 				throw new IFT287Exception("Ligue inexistante: " + nomLigue);
 			
-			// affichage
+			// Affichage
 			System.out.println("\nLigue " + nomLigue + " :");
 			for (Equipe eq : equipe.lectureEquipesLigue(nomLigue)) {
 				System.out.println("nomEquipe=" + eq.getNomEquipe() + ", matriculeCap=" + eq.getMatriculeCap()

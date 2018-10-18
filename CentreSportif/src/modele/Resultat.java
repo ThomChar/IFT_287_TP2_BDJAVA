@@ -28,7 +28,6 @@ public class Resultat {
 	
 	//Getters & Setters
 	
-
 	public Equipe getEquipeA() {
 		return EquipeA;
 	}

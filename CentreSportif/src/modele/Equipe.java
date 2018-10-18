@@ -24,20 +24,6 @@ public class Equipe {
 		this.setLigue(ligue);
 		this.nomEquipe = nomEquipe;
 		this.listParticipants = new ArrayList<Participant>();
-		//this.listParticipants.add(capitaine);
-		this.matriculeCap = matriculeCap;
-		this.capitaine = null;
-		this.nomLigue = nomLigue;
-		this.ligue = null;
-		this.listResultats = new ArrayList<Resultat>();
-	}
-	
-	
-	public Equipe(String nomLigue, String nomEquipe,  String matriculeCap, ArrayList<Participant> listParticipants) {
-		super();
-		this.setLigue(ligue);
-		this.nomEquipe = nomEquipe;
-		this.listParticipants = listParticipants;
 		this.matriculeCap = matriculeCap;
 		this.capitaine = null;
 		this.nomLigue = nomLigue;
@@ -46,8 +32,6 @@ public class Equipe {
 	}
 
 	//Getters & Setters
-	
-
 
 	public String getNomEquipe() {
 		return nomEquipe;
@@ -119,10 +103,10 @@ public class Equipe {
 
 	@Override
 	public String toString() {
-		return "Equipe [nomEquipe=" + nomEquipe + ", matriculeCap="+ matriculeCap + ", nomLigue=" + nomLigue + ",\nlistParticipants=" + listParticipants + ",\nlistResultats=" + listResultats + "]";
+		return "\nEquipe [nomEquipe=" + nomEquipe + ", matriculeCap="+ matriculeCap + ", nomLigue=" + nomLigue + ",\nlistParticipants=" + listParticipants + ",\nlistResultats=" + listResultats + "]";
 	}
 	public String toStringSimpleEquipe() {
-		return "Equipe [nomEquipe=" + nomEquipe + ", matriculeCap="+ matriculeCap + ", nomLigue=" + nomLigue + "]";
+		return "\nEquipe [nomEquipe=" + nomEquipe + ", matriculeCap="+ matriculeCap + ", nomLigue=" + nomLigue + "]";
 	}
 
 }

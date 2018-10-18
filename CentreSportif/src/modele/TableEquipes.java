@@ -1,17 +1,10 @@
 package modele;
 
-import java.sql.Array;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-
 import CentreSportif.Connexion;
-import CentreSportif.IFT287Exception;
 
 public class TableEquipes {
 
@@ -20,10 +13,13 @@ public class TableEquipes {
 	private PreparedStatement stmtInsert;
 	private PreparedStatement stmtUpdate;
 	private PreparedStatement stmtDelete;
+	@SuppressWarnings("unused")
 	private PreparedStatement stmtDispEquipes;
 	private PreparedStatement stmtDispEquipesLigue;
+	@SuppressWarnings("unused")
 	private PreparedStatement stmtDispParticipants;
 	private PreparedStatement stmtDispEquipesParLigue;
+	@SuppressWarnings("unused")
 	private PreparedStatement stmtNombreMembresEquipe;
 	private PreparedStatement stmtDeleteEquipesLigue;
 	private Connexion cx;
@@ -58,6 +54,8 @@ public class TableEquipes {
 
 	/**
 	 * Vérifie si une Equipe existe.
+	 * 
+	 *  @throws SQLException
 	 */
 	public boolean existe(String nomEquipe) throws SQLException {
 		stmtExiste.setString(1, nomEquipe);
@@ -68,7 +66,9 @@ public class TableEquipes {
 	}
 	
 	/**
-	 * Vérifie si un participant est deja capitain d'une equipe.
+	 * Verifie si un participant est deja capitain d'une equipe.
+	 * 
+	 * @throws SQLException
 	 */
 	public boolean testDejaCapitaine(String matricule) throws SQLException {
 		stmtExisteCapitaine.setString(1, matricule);
@@ -80,6 +80,8 @@ public class TableEquipes {
 
 	/**
 	 * Lecture d'une Equipe.
+	 * 
+	 * @throws SQLException
 	 */
 	public Equipe getEquipe(String nomEquipe) throws SQLException {
 		stmtExiste.setString(1, nomEquipe);
@@ -89,15 +91,6 @@ public class TableEquipes {
 			tupleEquipe.setNomEquipe(nomEquipe);
 			tupleEquipe.setMatriculeCap(rset.getString(2));
 			tupleEquipe.setNomLigue(rset.getString(3));
-
-			// A regarder pour recuperer arraylist
-			/*
-			 * tupleEquipe.setListParticipants( new ArrayList<Participant>((Collection<?
-			 * extends Participant>) Arrays.asList(rset.getArray(3))));
-			 * tupleEquipe.setListResultats( new ArrayList<Resultat>((Collection<? extends
-			 * Resultat>) Arrays.asList(rset.getArray(4))));
-			 */
-
 			rset.close();
 			return tupleEquipe;
 		} else {
@@ -107,6 +100,8 @@ public class TableEquipes {
 
 	/**
 	 * Ajout d'une nouvelle equipe non vide.
+	 * 
+	 * @throws SQLException
 	 */
 	public void creer(String nomEquipe, String matriculeCap, String nomLigue) throws SQLException {
 		/* Ajout de l'equipe. */
@@ -118,6 +113,8 @@ public class TableEquipes {
 
 	/**
 	 * Suppression d'une equipe.
+	 * 
+	 * @throws SQLException
 	 */
 	public int supprimer(String nomEquipe) throws SQLException {
 		stmtDelete.setString(1, nomEquipe);
@@ -126,6 +123,7 @@ public class TableEquipes {
 	
 	/**
 	 * Change le capitaine de l'equipe d'une equipe.
+	 * 
 	 * @throws SQLException 
 	 */
 	public void changerCapitaine(String nomEquipe, String matriculeCap) throws SQLException {
@@ -136,6 +134,8 @@ public class TableEquipes {
 	
 	/**
 	 * Suppression des �quipes d'une ligue.
+	 * 
+	 * @throws SQLException
 	 */
 	public int supprimerEquipesLigue(String nomLigue) throws SQLException {
 		stmtDeleteEquipesLigue.setString(1, nomLigue);
@@ -143,7 +143,7 @@ public class TableEquipes {
 	}
 
 	/**
-	 * lecture des equipes d'une ligue
+	 * Lecture des equipes d'une ligue
 	 * 
 	 * @throws SQLException
 	 */
@@ -165,7 +165,7 @@ public class TableEquipes {
 	}
 	
 	/**
-	 * lecture des equipes de la table
+	 * Lecture des equipes de la table
 	 * 
 	 * @throws SQLException
 	 */

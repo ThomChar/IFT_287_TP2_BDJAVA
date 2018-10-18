@@ -4,6 +4,10 @@ import java.util.ArrayList;
 
 import CentreSportif.IFT287Exception;
 
+/* Les transactions demandées pour le tp2 ne sont pas gérées dans cette classe, 
+ * Elle a toutefois été  créée pour une futur utilisation
+ * */
+
 public class ComplexeSportif {
 
 	// Attributes

@@ -1,14 +1,12 @@
 package modele;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import CentreSportif.Connexion;
 import CentreSportif.IFT287Exception;
 
 public class GestionLigue {
 
-  	//private TableParticipants participant;
   	private TableLigues ligue;
   	private TableEquipes equipe;
   	private TableParticipants participant;
@@ -20,8 +18,8 @@ public class GestionLigue {
     public GestionLigue(TableLigues ligue, TableEquipes equipe, TableParticipants participant) throws IFT287Exception
     {
         this.cx = ligue.getConnexion();
-        /*if (participant.getConnexion() != resultat.getConnexion())
-            throw new IFT287Exception("Les instances de participant et de resultat n'utilisent pas la même connexion au serveur");*/
+        if (participant.getConnexion() != ligue.getConnexion() || equipe.getConnexion() != ligue.getConnexion())
+            throw new IFT287Exception("Les instances de ligue, particpant et equipe n'utilisent pas la même connexion au serveur");
         this.ligue = ligue;
         this.equipe = equipe;
         this.participant = participant;
@@ -30,6 +28,8 @@ public class GestionLigue {
     /**
      * Ajout d'une nouvelle ligue vide dans la base de données. S'il existe déjà , une
      * exception est levée.
+     * 
+     * @throws SQLException, IFT287Exception, Exception
      */		
     public void ajouterLigueEmpty(String nomLigue, int nbJoueurMaxParEquipe) throws SQLException, IFT287Exception, Exception
     {
@@ -39,7 +39,7 @@ public class GestionLigue {
             if (ligue.existe(nomLigue))
                 throw new IFT287Exception("Ligue "+nomLigue+" existe déjà : ");
 
-            // Ajout du participant dans la table des participant
+            // Ajout d'une ligue vide dans la table des ligues
             ligue.creationEmptyLigue(nomLigue, nbJoueurMaxParEquipe);
             
             // Commit
@@ -55,6 +55,8 @@ public class GestionLigue {
     /**
      * Ajout d'une nouvelle ligue dans la base de données. S'il existe déjà , une
      * exception est levée.
+     * 
+     *  @throws SQLException, IFT287Exception, Exception
      */		
     public void ajouterLigue(String nomLigue, int nbJoueurMaxParEquipe) throws SQLException, IFT287Exception, Exception
     {
@@ -68,7 +70,7 @@ public class GestionLigue {
             if (!tupleLigue.testNewEquipes(nomLigue))
                 throw new IFT287Exception("Ligue "+nomLigue+" comprend une équipe déjà dans une autre ligue ");
 
-            // Ajout de la ligue dans la table des ligures
+            // Ajout de la ligue dans la table des ligues
             ligue.creationEmptyLigue(nomLigue, nbJoueurMaxParEquipe);
             
             // Commit
@@ -82,7 +84,9 @@ public class GestionLigue {
     }
     
     /**
-     * modifier le nombre de joueur max par equipe pour une ligue dans la base de données. 
+     * Modifier le nombre de joueur max par equipe pour une ligue dans la base de données. 
+     * 
+     *  @throws SQLException, IFT287Exception, Exception
      */		
     public void modifierNombreJoueurMax(String nomLigue, int nbJoueurMaxParEquipe) throws SQLException, IFT287Exception, Exception
     {
@@ -92,7 +96,7 @@ public class GestionLigue {
             if (ligue.existe(nomLigue))
                 throw new IFT287Exception("Ligue "+nomLigue+" existe déjà : ");
             
-            // Ajout de la ligue dans la table des ligures
+            // Ajout de la ligue dans la table des ligues
             ligue.modifierNbJoueursMaxParEquipe(nomLigue, nbJoueurMaxParEquipe);;
             
             // Commit
@@ -108,6 +112,8 @@ public class GestionLigue {
     
     /**
      * Supprime Ligue de la base de données.
+     * 
+     *  @throws SQLException, IFT287Exception, Exception
      */
     public void supprime(String nomLigue) throws SQLException, IFT287Exception, Exception
     {
@@ -121,7 +127,8 @@ public class GestionLigue {
                 throw new IFT287Exception("Ligue " + nomLigue + "a encore des participants actifs");
             
             // Suppression des equipes de la ligue.
-            int nbEquipe = equipe.supprimerEquipesLigue(nomLigue);
+            @SuppressWarnings("unused")
+			int nbEquipe = equipe.supprimerEquipesLigue(nomLigue);
             // Suppression de la ligue.
             int nbLique = ligue.supprimer(nomLigue);
             if (nbLique == 0)

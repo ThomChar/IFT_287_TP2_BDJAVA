@@ -55,6 +55,8 @@ public class TableResultats {
 
 	/**
 	 * Vérifie si un resultat existe.
+	 * 
+	 * @throws SQLException
 	 */
 	public boolean existe(String nomEquipeA, String nomEquipeB) throws SQLException {
 		stmtExiste.setString(1, nomEquipeA);
@@ -67,6 +69,8 @@ public class TableResultats {
 
 	/**
 	 * Lecture d'un resultat.
+	 * 
+	 * @throws SQLException
 	 */
 	public Resultat getResultat(String nomEquipeA, String nomEquipeB) throws SQLException {
 		stmtExiste.setString(1, nomEquipeA);
@@ -76,8 +80,6 @@ public class TableResultats {
 			Resultat tupleResultat = new Resultat();
 			tupleResultat.setNomEquipeA(nomEquipeA);
 			tupleResultat.setNomEquipeB(nomEquipeB);
-			/*tupleResultat.setScoreEquipeA(rset.getInt(1));
-			tupleResultat.setScoreEquipeB(rset.getInt(2));*/
 			rset.close();
 			return tupleResultat;
 		} else
@@ -90,7 +92,6 @@ public class TableResultats {
 	 * @throws SQLException
 	 */
 	public void ajouter(String nomEquipeA, String nomEquipeB, int scoreEquipeA, int scoreEquipeB) throws SQLException {
-
 		stmtInsert.setString(1, nomEquipeA);
 		stmtInsert.setString(2, nomEquipeB);
 		stmtInsert.setInt(3, scoreEquipeA);
@@ -99,7 +100,9 @@ public class TableResultats {
 	}
 
 	/**
-	 * modifier le resultat pour un match.
+	 * Modifier le resultat pour un match.
+	 * 
+	 * @throws SQLException
 	 */
 
 	public int modifier(String nomEquipeA, String nomEquipeB, int scoreEquipeA, int scoreEquipeB) throws SQLException {
@@ -112,6 +115,8 @@ public class TableResultats {
 
 	/**
 	 * Supprimer Resultat dans la base de données
+	 * 
+	 * @throws SQLException
 	 */
 	public int supprimer(String nomEquipeA, String nomEquipeB) throws SQLException {
 		stmtDelete.setString(1, nomEquipeA);
@@ -167,7 +172,7 @@ public class TableResultats {
 	}
 
 	/**
-	 * afficher les resultats pour un match.
+	 * Afficher les resultats pour un match.
 	 */
 	public void afficher() throws SQLException {
 		ResultSet rset = stmtDispResultat.executeQuery();
@@ -175,7 +180,7 @@ public class TableResultats {
 	}
 	
 	/**
-	 * lecture des resultats de l'équipe
+	 * Lecture des resultats de l'équipe
 	 * 
 	 * @throws SQLException
 	 */
@@ -192,7 +197,6 @@ public class TableResultats {
 			tupleResultat.setNomEquipeB(rset.getString("nomEquipeB"));
 			tupleResultat.setScoreEquipeA(rset.getInt("scoreEquipeA"));
 			tupleResultat.setScoreEquipeB(rset.getInt("scoreEquipeB"));
-			//rset.close();
 			listResultats.add(tupleResultat);
 		}
 		rset.close();

@@ -11,24 +11,22 @@ public class GestionResultat {
 	private Connexion cx;
 
 	public GestionResultat(TableResultats resultat) throws IFT287Exception {
-		/*
-		 * if (resultat.getConnexion() != membre.getConnexion() ||
-		 * reservation.getConnexion() != membre.getConnexion()) throw new
-		 * BiblioException(
-		 * "Les instances de livre, de membre et de reservation n'utilisent pas la mÃªme connexion au serveur"
-		 * );
-		 */
 		this.cx = resultat.getConnexion();
 		this.resultat = resultat;
 
 	}
 
+	/**
+	 *  Inscrit un resultat enntre deux equipes
+	 *  
+	 *  @throws SQLException, IFT287Exception, Exception
+	 */
 	public void InscrireResulat(String nomEquipeA, String nomEquipeB, int scoreEquipeA, int scoreEquipeB)
 			throws SQLException, IFT287Exception, Exception {
 		try {
 			// Verifier si resultat equipeA contre EquipeB existe
 			Resultat tupleResultat = resultat.getResultat(nomEquipeA,nomEquipeB);
-			//si pas de match retour possible
+			//Si pas de match retour n'est autorisé
 			Resultat tupleResultat2 = resultat.getResultat(nomEquipeB,nomEquipeA);
 			if (tupleResultat != null)
 				throw new IFT287Exception("Resultat deja existant: " + nomEquipeA + " contre " + nomEquipeB );
@@ -49,9 +47,12 @@ public class GestionResultat {
 
 	/**
 	 * Supprime resultat. Le resultat doit exister
+	 * 
+	 *  @throws SQLException, IFT287Exception, Exception
 	 */
 	public void supprimerResultat(String nomEquipeA, String nomEquipeB) throws SQLException, IFT287Exception, Exception {
 		try {
+			
 			// Verifier si resultat existe
 			if (resultat.supprimer(nomEquipeA, nomEquipeB) == 0)
 				throw new IFT287Exception("Resultat entre " + nomEquipeA + " et " + nomEquipeB + " n'existe pas");
@@ -65,10 +66,13 @@ public class GestionResultat {
 	}
 	
 	/**
-	 * modifier resultat. Le resultat doit exister
+	 * Modifier resultat. Le resultat doit exister
+	 * 
+	 *  @throws SQLException, IFT287Exception, Exception
 	 */
 	public void modifierResultat(String nomEquipeA, String nomEquipeB, int scoreEquipeA, int scoreEquipeB) throws SQLException, IFT287Exception, Exception {
 		try {
+			
 			// Verifier si resultat existe
 			if (!resultat.existe(nomEquipeA, nomEquipeB))
 				throw new IFT287Exception("Resultat entre " + nomEquipeA + " et " + nomEquipeB + " n'existe pas");
@@ -84,7 +88,9 @@ public class GestionResultat {
 	}
 	
 	/**
-	 * affichage de l'ensemble des résultats de la table.
+	 * Affichage de l'ensemble des résultats de la table.
+	 * 
+	 *  @throws SQLException, IFT287Exception, Exception
 	 */
 	public void affichageResultats() throws SQLException, IFT287Exception, Exception {
 		try {

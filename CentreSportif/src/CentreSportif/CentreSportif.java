@@ -124,7 +124,7 @@ public class CentreSportif
                 // les commandes de votre programme. Vous pouvez ajouter autant
                 // de else if que necessaire. Vous n'avez pas a traiter la
                 // commande "quitter".
-               if(command.equals("inscrireParticipant")) //OK
+               if(command.equals("inscrireParticipant")) 
                 {
                 	String prenom = readString(tokenizer);
                 	String nom = readString(tokenizer);
@@ -132,23 +132,23 @@ public class CentreSportif
                 	String matricule = readString(tokenizer);
                 	gestionParticipant.ajouter(matricule, prenom, nom, motDePasse, null, null);
                 }
-                else if(command.equals("supprimerParticipant")) // OK
+                else if(command.equals("supprimerParticipant")) 
                 {
                 	String matricule = readString(tokenizer);
                 	gestionParticipant.supprime(matricule);
                 }
-                else if(command.equals("ajouterLigue")) // OK
+                else if(command.equals("ajouterLigue")) 
                 {
                 	String nomLigue = readString(tokenizer);
                 	int nbJoueur = readInt(tokenizer);
                 	gestionLigue.ajouterLigue(nomLigue, nbJoueur);
                 }
-                else if(command.equals("supprimerLigue")) // OK
+                else if(command.equals("supprimerLigue"))
                 {
                 	String nomLigue = readString(tokenizer);
                 	gestionLigue.supprime(nomLigue);
                 }
-                else if(command.equals("ajouterEquipe"))	//OK
+                else if(command.equals("ajouterEquipe"))
                 {
                 	String nomLigue = readString(tokenizer);
                 	String nomEquipe = readString(tokenizer);
@@ -156,51 +156,51 @@ public class CentreSportif
                 	gestionEquipe.ajouter(nomEquipe, matriculeCap, nomLigue);
                 	gestionParticipant.accepteParEquipe(nomEquipe, matriculeCap);
                 }
-                else if(command.equals("changerCapitaine"))	//Ok si not null
+                else if(command.equals("changerCapitaine"))
                 {
                 	String nomEquipe = readString(tokenizer);
                 	String matriculeCap = readString(tokenizer);
                 	gestionEquipe.changerCapitaine(nomEquipe, matriculeCap);
                 }
-                else if(command.equals("ajouterJoueur"))	//OK
+                else if(command.equals("ajouterJoueur"))	
                 {
                 	String nomEquipe = readString(tokenizer);
                 	String matricule = readString(tokenizer);
                 	gestionParticipant.ajouteParEquipe(nomEquipe, matricule);
                 }
-                else if(command.equals("accepterJoueur"))	//OK
+                else if(command.equals("accepterJoueur"))	
                 {
                 	String nomEquipe = readString(tokenizer);
                 	String matricule = readString(tokenizer);
                 	gestionParticipant.accepteParEquipe(nomEquipe, matricule);
                 }
-                else if(command.equals("refuserJoueur"))	//OK
+                else if(command.equals("refuserJoueur"))	
                 {
                 	String nomEquipe = readString(tokenizer);
                 	String matricule = readString(tokenizer);
                 	gestionParticipant.refuseParEquipe(nomEquipe, matricule);
                 }
-                else if(command.equals("supprimerJoueur"))	//OK
+                else if(command.equals("supprimerJoueur"))	
                 {
                 	String nomEquipe = readString(tokenizer);
                 	String matricule = readString(tokenizer);
                 	gestionParticipant.supprimeParEquipe(nomEquipe, matricule);
                 }
-                else if(command.equals("afficherEquipes")) // OK
+                else if(command.equals("afficherEquipes")) 
                 {
                 	gestionEquipe.affichageEquipes();
                 }
-                else if(command.equals("afficherEquipe")) // OK
+                else if(command.equals("afficherEquipe")) 
                 {
                 	String nomEquipe = readString(tokenizer);
                 	gestionEquipe.affichageEquipe(nomEquipe);
                 }
-                else if(command.equals("afficherLigue")) // OK
+                else if(command.equals("afficherLigue")) 
                 {
                 	String nomLigue = readString(tokenizer);
                 	gestionEquipe.afficherEquipesLigue(nomLigue);
                 }
-                else if(command.equals("ajouterResultat"))	//OK
+                else if(command.equals("ajouterResultat"))	
                 {
                 	String nomEquipeA = readString(tokenizer);
                 	int scoreEquipeA = readInt(tokenizer);
@@ -208,7 +208,7 @@ public class CentreSportif
                 	int scoreEquipeB = readInt(tokenizer);
                 	gestionResultat.InscrireResulat(nomEquipeA, nomEquipeB, scoreEquipeA, scoreEquipeB);
                 }
-                else if(command.equals("supprimerResultat"))	//OK
+                else if(command.equals("supprimerResultat"))	
                 {
                 	String nomEquipeA = readString(tokenizer);
                 	String nomEquipeB = readString(tokenizer);

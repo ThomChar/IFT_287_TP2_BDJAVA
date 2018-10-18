@@ -14,6 +14,7 @@ public class GestionParticipant {
 
 	/**
 	 * Creation d'une instance
+	 * 
 	 */
 	public GestionParticipant(TableParticipants participant , TableEquipes equipe) throws IFT287Exception {
 		this.cx = participant.getConnexion();
@@ -29,15 +30,19 @@ public class GestionParticipant {
 	/**
 	 * Ajout d'un nouveau particpant dans la base de données. S'il existe déjà , une
 	 * exception est levée.
+	 * 
+	 *  @throws SQLException, IFT287Exception, Exception
 	 */
 	public void ajouter(String matricule, String prenom, String nom, String motDePasse, String nomEquipe, String statut)
 			throws SQLException, IFT287Exception, Exception {
 		try {
+			
 			// Vérifie si le participant existe déjà
 			if (participant.existe(matricule))
 				throw new IFT287Exception("Particpant existe déjà : " + matricule);
-			// Ajout du participant dans la table des participant
+			// Ajout du participant dans la table des participants
 			participant.ajouter(matricule, prenom, nom, motDePasse, nomEquipe, statut);
+			
 			// Commit
 			cx.commit();
 		} catch (Exception e) {
@@ -49,6 +54,8 @@ public class GestionParticipant {
 	/**
 	 * Modifier nom et prenom d'un participant dans la base de données. S'il existe
 	 * déjà , une exception est levée.
+	 * 
+	 *  @throws SQLException, IFT287Exception, Exception
 	 */
 	public void modifierNomPrenom(String matricule, String prenom, String nom)
 			throws SQLException, IFT287Exception, Exception {
@@ -59,7 +66,7 @@ public class GestionParticipant {
 			if (participant.existeNom(prenom))
 				throw new IFT287Exception("Un participant avec le nom : " + nom + "existe déjà");
 
-			// modification du participant dans la table des participant
+			// modification du participant dans la table des participants
 			participant.modifierNomPrenom(matricule, prenom, nom);
 
 			// Commit
@@ -73,9 +80,12 @@ public class GestionParticipant {
 	/**
 	 * Modifier mot de passe d'un participant dans la base de données. S'il existe
 	 * déjà , une exception est levée.
+	 * 
+	 *  @throws SQLException, IFT287Exception, Exception
 	 */
 	public void modifierMotDePasse(String matricule, String motDePasse)
 			throws SQLException, IFT287Exception, Exception {
+		
 		try {
 			// modification du participant dans la table des participant
 			participant.modifierMotDePasse(matricule, motDePasse);
@@ -91,9 +101,12 @@ public class GestionParticipant {
 	/**
 	 * Ajouter un participant dans une equipe du point de vu participant. S'il
 	 * n'existe pas , une exception est levée.
+	 * 
+	 *  @throws SQLException, IFT287Exception, Exception
 	 */
 	public void ajouteParEquipe(String nomEquipe, String matricule) throws SQLException, IFT287Exception, Exception {
 		try {
+			
 			// Vérifie si le participant existe
 			if (!participant.existe(matricule))
 				throw new IFT287Exception("Participant "+matricule+" n'existe pas");
@@ -127,6 +140,8 @@ public class GestionParticipant {
 	/**
 	 * Accepter un participant dans une equipe du point de vu participant. S'il
 	 * n'existe pas , une exception est levée.
+	 * 
+	 *  @throws SQLException, IFT287Exception, Exception
 	 */
 	public void accepteParEquipe(String nomEquipe, String matricule) throws SQLException, IFT287Exception, Exception {
 		try {
@@ -148,17 +163,6 @@ public class GestionParticipant {
 				throw new IFT287Exception("Le Participant selectionné est déjà dans votre equipe");
 
 			participant.accepteParEquipe(nomEquipe, matricule);
-
-			// Accepte à la liste de l'équipe
-
-			/*
-			 * Participant joueur = participant.getParticipant(matricule);
-			 * ArrayList<Participant> listJoueurs =
-			 * equipe.getEquipe(nomEquipe).getListParticipants(); for (Participant membre :
-			 * listJoueurs) { if (membre.getMatricule().equals(joueur.getMatricule())) {
-			 * membre.setStatut("ACCEPTE"); } } equipe.modifierJoueurEquipe(nomEquipe,
-			 * listJoueurs);
-			 */
 
 			// Commit
 			cx.commit();
@@ -189,16 +193,6 @@ public class GestionParticipant {
 
 			participant.refuseParEquipe(nomEquipe, matricule);
 
-			// Refuse à la liste de l'équipe
-
-			/*
-			 * Participant joueur = participant.getParticipant(matricule);
-			 * ArrayList<Participant> listJoueurs =
-			 * equipe.getEquipe(nomEquipe).getListParticipants();
-			 * listJoueurs.remove(joueur); equipe.modifierJoueurEquipe(nomEquipe,
-			 * listJoueurs);
-			 */
-
 			// Commit
 			cx.commit();
 		} catch (Exception e) {
@@ -210,6 +204,8 @@ public class GestionParticipant {
 	/**
 	 * Supprimer un participant dans une equipe du point de vu participant. S'il
 	 * n'existe pas , une exception est levée.
+	 * 
+	 *  @throws SQLException, IFT287Exception, Exception
 	 */
 	public void supprimeParEquipe(String nomEquipe, String matricule) throws SQLException, IFT287Exception, Exception {
 		try {
@@ -235,7 +231,6 @@ public class GestionParticipant {
 				equipe.changerCapitaine(nomEquipe, null);
 			}
 			participant.supprimeParEquipe(nomEquipe, matricule);
-			// Refuse à la liste de l'équipe
 
 			// Commit
 			cx.commit();
@@ -246,10 +241,13 @@ public class GestionParticipant {
 	}
 
 	/**
-	 * Supprime Participant.
+	 * Supprime Participant de la base de donnée.
+	 * 
+	 *  @throws SQLException, IFT287Exception, Exception
 	 */
 	public void supprime(String matricule) throws SQLException, IFT287Exception, Exception {
 		try {
+			
 			// Validation
 			Participant tupleParticipant = participant.getParticipant(matricule);
 			if (tupleParticipant == null)
@@ -297,6 +295,8 @@ public class GestionParticipant {
 
 	/**
 	 * Lecture des participants d'une équipe
+	 * 
+	 *  @throws SQLException, IFT287Exception, Exception
 	 */
 	public void affichageParticipants(String nomEquipe) throws SQLException, IFT287Exception, Exception {
 		// Validation
@@ -307,6 +307,7 @@ public class GestionParticipant {
 			if (!tupleEquipe.isActive())
 				throw new IFT287Exception("Equipe " + nomEquipe + "a encore des participants actifs");
 
+			@SuppressWarnings("unused")
 			ArrayList<Participant> listeParticipant = participant.lectureParticipants(nomEquipe);
 
 			// Commit
@@ -318,7 +319,9 @@ public class GestionParticipant {
 	}
 
 	/**
-	 * affichage de l'ensemble des participants de la table.
+	 * Affichage de l'ensemble des participants de la table.
+	 * 
+	 *  @throws SQLException, IFT287Exception, Exception
 	 */
 	public void affichageParticipants() throws SQLException, IFT287Exception, Exception {
 		try {

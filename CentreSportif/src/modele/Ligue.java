@@ -83,9 +83,5 @@ public class Ligue {
 		}
 		return testNewEquipe;
 	}
-
-	// Methods
 	
-	
-
 }

@@ -12,7 +12,6 @@ import CentreSportif.Connexion;
 
 public class TableParticipants {
 	
-
 	private PreparedStatement stmtExiste;
 	private PreparedStatement stmtExisteNom;
 	private PreparedStatement stmtExistePrenom;
@@ -22,7 +21,7 @@ public class TableParticipants {
     private PreparedStatement stmtUpdateMotDePasse;
     private PreparedStatement stmtDelete;
     private PreparedStatement stmtDispParticipant;
-    private PreparedStatement stmtDispParticipants;
+    private PreparedStatement stmtDispParticipantsActifsEquipe;
     private PreparedStatement stmtNombreMembresEquipe;
     private PreparedStatement stmtNombreMembresLigue;
     private Connexion cx;
@@ -49,9 +48,9 @@ public class TableParticipants {
         stmtUpdateMotDePasse = cx.getConnection().prepareStatement("update Participant set motDePasse = ? " + "where matricule = ?");
         stmtDelete = cx.getConnection().prepareStatement("delete from Participant where matricule = ?");
         stmtDispParticipant = cx.getConnection().prepareStatement("select matricule, prenom, nom, motDePasse, nomEquipe, statut from Participant");
-        stmtDispParticipants = cx.getConnection().prepareStatement("select * from Participant where nomEquipe = ?");
-        stmtNombreMembresEquipe = cx.getConnection().prepareStatement("select COUNT(*) AS nb FROM Participant WHERE nomEquipe = ?");
-        stmtNombreMembresLigue = cx.getConnection().prepareStatement("SELECT COUNT(*) AS nb FROM participant NATURAL JOIN equipe NATURAL JOIN ligue WHERE nomLigue = ? AND statut = 'accepte'");
+        stmtDispParticipantsActifsEquipe = cx.getConnection().prepareStatement("select * from Participant where nomEquipe = ? and statut = ?");
+        stmtNombreMembresEquipe = cx.getConnection().prepareStatement("select COUNT(*) AS nb FROM Participant WHERE nomEquipe = ? and statut = ? ");
+        stmtNombreMembresLigue = cx.getConnection().prepareStatement("SELECT COUNT(*) AS nb FROM participant NATURAL JOIN equipe NATURAL JOIN ligue WHERE nomLigue = ? AND statut = 'ACCEPTE'");
     }
 
     /**
@@ -64,6 +63,8 @@ public class TableParticipants {
 
     /**
      * Vérifie si un participant existe.
+     * 
+     * @throws SQLException
      */
     public boolean existe(String matricule) throws SQLException
     {
@@ -76,6 +77,8 @@ public class TableParticipants {
     
     /**
      * Vérifie si un prenom de participant existe.
+     * 
+     * @throws SQLException
      */
     public boolean existePrenom(String prenom) throws SQLException
     {
@@ -88,6 +91,8 @@ public class TableParticipants {
     
     /**
      * Vérifie si un nom de participant existe.
+     * 
+     * @throws SQLException
      */
     public boolean existeNom(String nom) throws SQLException
     {
@@ -100,6 +105,8 @@ public class TableParticipants {
 
     /**
      * Lecture d'un participant.
+     * 
+     * @throws SQLException
      */
     public Participant getParticipant(String matricule) throws SQLException
     {
@@ -123,6 +130,7 @@ public class TableParticipants {
 
     /**
      * Ajout d'un nouveau participant dans la base de données.
+     * 
      * @throws SQLException 
      */
     public void ajouter(String matricule, String prenom, String nom, String motDePasse, String nomEquipe,
@@ -139,6 +147,7 @@ public class TableParticipants {
     
     /**
      * Modifier nom et prenom d'un participant dans la base de données.
+     * 
      * @throws SQLException 
      */
     public void modifierNomPrenom(String matricule, String prenom, String nom) throws SQLException {
@@ -151,6 +160,7 @@ public class TableParticipants {
     
     /**
      * Modifier motDePasse d'un participant dans la base de données.
+     * 
      * @throws SQLException 
      */
     public void modifierMotDePasse(String matricule, String motDePasse) throws SQLException {
@@ -162,6 +172,8 @@ public class TableParticipants {
     
     /**
      * Accepter le participant dans une equipe.
+     * 
+     * @throws SQLException
      */
     
     public int accepteParEquipe(String nomEquipe, String matricule) throws SQLException
@@ -174,6 +186,8 @@ public class TableParticipants {
 
     /**
      * Ajouter Participant disponible dans une equipe
+     * 
+     * @throws SQLException
      */
     public int ajouteParEquipe(String nomEquipe, String matricule) throws SQLException
     {
@@ -185,6 +199,8 @@ public class TableParticipants {
     
     /**
      * Refuser Participant disponible dans une equipe
+     * 
+     * @throws SQLException
      */
     public int refuseParEquipe(String nomEquipe, String matricule) throws SQLException
     {
@@ -196,6 +212,8 @@ public class TableParticipants {
     
     /**
      * Supprimer Participant dans une equipe
+     * 
+     * @throws SQLException
      */
     public int supprimeParEquipe(String nomEquipe, String matricule) throws SQLException
     {
@@ -207,6 +225,7 @@ public class TableParticipants {
 
     /**
      * Suppression d'un participant du complexe.
+     * 
      * @throws SQLException 
      */
     public int supprimer(String matricule) throws SQLException {
@@ -215,7 +234,9 @@ public class TableParticipants {
     }
 
     /**
-     * afficher les participants.
+     * Afficher les participants.
+     * 
+     * @throws SQLException
      */ 
     public void afficherParticipant() throws SQLException
     {
@@ -224,12 +245,14 @@ public class TableParticipants {
     }
     
     /**
-	 * lecture des participants de l'équipe
+	 * Lecture des participants de l'équipe
+	 * 
 	 * @throws SQLException
 	 */
 	public ArrayList<Participant> lectureParticipants(String nomEquipe) throws SQLException {
-		stmtDispParticipants.setString(1, nomEquipe);
-		ResultSet rset = stmtDispParticipants.executeQuery();
+		stmtDispParticipantsActifsEquipe.setString(1, nomEquipe);
+		stmtDispParticipantsActifsEquipe.setString(2, "ACCEPTE");
+		ResultSet rset = stmtDispParticipantsActifsEquipe.executeQuery();
 		ArrayList<Participant> listeParticipants = new ArrayList<Participant>();
 		
 		while(rset.next()) {
@@ -248,10 +271,13 @@ public class TableParticipants {
 	
 	/**
 	 * Compter nombres de particpants dans une équipe
+	 * 
+	 * @throws SQLException
 	 */
 	public int nombreMembresEquipe(String nomEquipe) throws SQLException
 	{
-		stmtDispParticipants.setString(1, nomEquipe);
+		stmtNombreMembresEquipe.setString(1, nomEquipe);
+		stmtNombreMembresEquipe.setString(2, "ACCEPTE");
 		ResultSet rset = stmtNombreMembresEquipe.executeQuery();
 		rset.next();
 		int nb = rset.getInt("nb");
@@ -261,6 +287,8 @@ public class TableParticipants {
 	
 	/**
 	 * Compter nombres de particpants dans une ligue
+	 * 
+	 * @throws SQLException
 	 */
 	public int nombreMembresLigue(String nomLigue) throws SQLException
 	{

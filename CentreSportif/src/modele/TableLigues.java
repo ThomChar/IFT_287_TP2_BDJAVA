@@ -5,8 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 
 import CentreSportif.Connexion;
 import CentreSportif.IFT287Exception;
@@ -19,6 +17,7 @@ public class TableLigues {
 	private PreparedStatement stmtUpdate;
 	private PreparedStatement stmtUpdateListEquipes;
 	private PreparedStatement stmtDelete;
+	@SuppressWarnings("unused")
 	private PreparedStatement stmtDispEquipes;
 	private Connexion cx;
 
@@ -49,6 +48,8 @@ public class TableLigues {
 
 	/**
 	 * Verifie si une ligue existe.
+	 * 
+	 * @throws SQLException
 	 */
 	public boolean existe(String nomLigue) throws SQLException {
 		stmtExiste.setString(1, nomLigue);
@@ -60,6 +61,8 @@ public class TableLigues {
 
 	/**
 	 * Lecture d'une Ligue.
+	 * 
+	 * @throws SQLException
 	 */
 	public Ligue getLigue(String nomLigue) throws SQLException {
 		stmtExiste.setString(1, nomLigue);
@@ -68,10 +71,6 @@ public class TableLigues {
 			Ligue tupleLigue = new Ligue();
 			tupleLigue.setNomLigue(nomLigue);
 			tupleLigue.setNbJoueurMaxParEquipe(rset.getInt("nbJoueursMaxParEquipe"));
-			// A regarder pour recuperer arraylist
-
-			/*tupleLigue.setListEquipes(
-					new ArrayList<Equipe>((Collection<? extends Equipe>) Arrays.asList(rset.getArray(2))));*/
 			rset.close();
 			return tupleLigue;
 		} else {
@@ -85,11 +84,6 @@ public class TableLigues {
 	 * @throws IFT287Exception
 	 */
 	public void creationEmptyLigue(String nomLigue, int nbJoueurMaxParEquipe) throws SQLException, IFT287Exception {
-		/* Ajout d'une ligue vide. */
-		/*
-		 * if (existe(nomLigue)) throw new IFT287Exception("Cette ligue existe déjà");
-		 */
-
 		stmtInsertEmpty.setString(1, nomLigue);
 		stmtInsertEmpty.setInt(2, nbJoueurMaxParEquipe);
 		stmtInsertEmpty.executeUpdate();
@@ -102,11 +96,6 @@ public class TableLigues {
 	 */
 	public void creation(String nomLigue, int nbJoueurMaxParEquipe, ArrayList<Equipe> listEquipes)
 			throws SQLException, IFT287Exception {
-		/* Ajout d'une ligue non vide. */
-		/*
-		 * if (existe(nomLigue)) throw new IFT287Exception("Cette ligue existe déjà");
-		 */
-
 		stmtInsert.setString(1, nomLigue);
 		stmtInsert.setInt(2, nbJoueurMaxParEquipe);
 		stmtInsert.setArray(3, (Array) listEquipes);
@@ -120,7 +109,6 @@ public class TableLigues {
 	 */
 	public void modifierNbJoueursMaxParEquipe(String nomLigue, int nbJoueurMaxParEquipe)
 			throws SQLException, IFT287Exception {
-		
 		stmtUpdate.setInt(1, nbJoueurMaxParEquipe);
 		stmtUpdate.setString(2, nomLigue);
 		stmtUpdate.executeUpdate();
@@ -133,7 +121,6 @@ public class TableLigues {
 	 */
 	public void modifierListEquipes(String nomLigue, ArrayList<Equipe> listEquipes)
 			throws SQLException, IFT287Exception {
-		
 		stmtUpdateListEquipes.setArray(1, (Array)listEquipes);
 		stmtUpdateListEquipes.setString(2, nomLigue);
 		stmtUpdateListEquipes.executeUpdate();
@@ -142,6 +129,8 @@ public class TableLigues {
 	/**
 	 * Suppression d'une ligue. regarder si ligue n'est pas active avant de
 	 * supprimer
+	 * 
+	 * @throws SQLException
 	 */
 	public int supprimer(String nomLigue) throws SQLException {
 		stmtDelete.setString(1, nomLigue);
@@ -149,7 +138,7 @@ public class TableLigues {
 	}
 	
 	/**
-	 * afficher toutes les equipes d'une ligue.
+	 * Afficher toutes les equipes d'une ligue.
 	 * 
 	 * @throws IFT287Exception
 	 */
