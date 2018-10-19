@@ -10,21 +10,23 @@ public class GestionParticipant {
 
 	private TableParticipants participant;
 	private TableEquipes equipe;
+	private TableLigues ligue;
 	private Connexion cx;
 
 	/**
 	 * Creation d'une instance
 	 * 
 	 */
-	public GestionParticipant(TableParticipants participant , TableEquipes equipe) throws IFT287Exception {
+	public GestionParticipant(TableParticipants participant , TableEquipes equipe, TableLigues ligue) throws IFT287Exception {
 		this.cx = participant.getConnexion();
 
-		if (participant.getConnexion() != equipe.getConnexion())
+		if (participant.getConnexion() != equipe.getConnexion() && participant.getConnexion() != ligue.getConnexion())
 			throw new IFT287Exception(
-					"Les instances de participant et de equipe n'utilisent pas la même connexion au serveur");
+					"Les instances de participant, ligue et de equipe n'utilisent pas la même connexion au serveur");
 
 		this.participant = participant;
 		this.equipe = equipe;
+		this.ligue = ligue;
 	}
 
 	/**
@@ -150,6 +152,10 @@ public class GestionParticipant {
 				throw new IFT287Exception("Particpant"+matricule+ "n'existe pas");
 			if (!equipe.existe(nomEquipe))
 				throw new IFT287Exception("L'equipe selectionnée " + nomEquipe + " est introuvable");
+			// vérification du nombre de joueurs max de l'équipe
+			Ligue l = ligue.getLigue(equipe.getEquipe(nomEquipe).getNomLigue());
+			if(participant.nombreMembresEquipe(nomEquipe) >= l.getNbJoueurMaxParEquipe())
+				throw new IFT287Exception("Impossible d'ajouter un nouveau jour dans l'équipe : " + nomEquipe + ", puisque nombre de joueurs max dépassé.");
 			if (participant.getParticipant(matricule).getStatut().equals("EN ATTENTE")
 					&& !participant.getParticipant(matricule).getNomEquipe().equals(nomEquipe))
 				throw new IFT287Exception("Le Participant selectionné postule déjà pour une autre équipe : "
@@ -161,7 +167,6 @@ public class GestionParticipant {
 			if (participant.getParticipant(matricule).getStatut().equals("ACCEPTE")
 					&& participant.getParticipant(matricule).getNomEquipe().equals(nomEquipe))
 				throw new IFT287Exception("Le Participant selectionné est déjà dans votre equipe");
-
 			participant.accepteParEquipe(nomEquipe, matricule);
 
 			// Commit

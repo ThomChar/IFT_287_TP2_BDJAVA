@@ -103,7 +103,7 @@ public class CentreSportif
     	tableResultats = new TableResultats(cx);
         gestionLigue = new GestionLigue(tableLigues, tableEquipes, tableParticipants);
 		gestionEquipe = new GestionEquipe(tableEquipes,tableParticipants,tableLigues,tableResultats);
-        gestionParticipant = new GestionParticipant(tableParticipants, tableEquipes);
+        gestionParticipant = new GestionParticipant(tableParticipants, tableEquipes, tableLigues);
         gestionResultat = new GestionResultat(tableResultats);
     }
 
@@ -130,7 +130,7 @@ public class CentreSportif
                 	String nom = readString(tokenizer);
                 	String motDePasse = readString(tokenizer);
                 	String matricule = readString(tokenizer);
-                	gestionParticipant.ajouter(matricule, prenom, nom, motDePasse, null, null);
+                	gestionParticipant.ajouter(matricule, prenom, nom, motDePasse, null, "none");
                 }
                 else if(command.equals("supprimerParticipant")) 
                 {
@@ -140,8 +140,8 @@ public class CentreSportif
                 else if(command.equals("ajouterLigue")) 
                 {
                 	String nomLigue = readString(tokenizer);
-                	int nbJoueur = readInt(tokenizer);
-                	gestionLigue.ajouterLigue(nomLigue, nbJoueur);
+                	int nbJoueurMax = readInt(tokenizer);
+                	gestionLigue.ajouterLigue(nomLigue, nbJoueurMax);
                 }
                 else if(command.equals("supprimerLigue"))
                 {

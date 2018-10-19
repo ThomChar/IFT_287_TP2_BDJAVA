@@ -198,7 +198,7 @@ public class GestionEquipe {
 				throw new IFT287Exception("Ligue inexistante: " + nomLigue);
 			
 			// Affichage
-			System.out.println("\nLigue " + nomLigue + " :");
+			System.out.println("\nLigue " + nomLigue + "(nombre max de joueurs=" + ligue.getLigue(nomLigue).getNbJoueurMaxParEquipe() + ") :");
 			for (Equipe eq : equipe.lectureEquipesLigue(nomLigue)) {
 				System.out.println("nomEquipe=" + eq.getNomEquipe() + ", matriculeCap=" + eq.getMatriculeCap()
 						+ ", nombreDeMatchsGagnés=" + resultat.ObtenirNbMGagne(eq.getNomEquipe())

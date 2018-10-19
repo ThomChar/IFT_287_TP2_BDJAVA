@@ -72,7 +72,7 @@ public class Resultat {
 
 	@Override
 	public String toString() {
-		return "Resultat [nomEquipeA=" + nomEquipeA + ", nomEquipeB=" + nomEquipeB + ", scoreEquipeA=" + scoreEquipeA
+		return "\nResultat [nomEquipeA=" + nomEquipeA + ", nomEquipeB=" + nomEquipeB + ", scoreEquipeA=" + scoreEquipeA
 				+ ", scoreEquipeB=" + scoreEquipeB + "]";
 	}
 	

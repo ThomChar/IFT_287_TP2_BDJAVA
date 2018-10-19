@@ -93,8 +93,8 @@ public class Participant {
 	
 	@Override
 	public String toString() {
-		return "Participant [matricule=" + matricule + ", prenom=" + prenom + ", nom=" + nom + ", motDePasse="
-				+ motDePasse + "]";
+		return "\nParticipant [matricule=" + matricule + ", prenom=" + prenom + ", nom=" + nom + ", motDePasse="
+				+ motDePasse + " statut=" + statut + "]";
 	}
 
 	public boolean isActive() {
